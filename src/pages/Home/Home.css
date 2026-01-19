@@ -1,0 +1,27 @@
+/* src/pages/Home/Home.css */
+
+.home__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Centers the search bar and "no results" vertically stacked */
+.home__search-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 40px 0;
+  gap: 20px; /* space between search bar and no results message */
+}
+
+/* "No results" message styling */
+.no-results {
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+

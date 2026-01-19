@@ -1,25 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import logo from "../../assets/logo-2.png"; // your logo
 
-function Header() {
+function Header({ setMovies }) {
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    if (setMovies) setMovies([]); // clear search results
+    navigate("/");
+  };
+
   return (
     <header className="header">
       <div className="header-left">
-        <img src={logo} alt="Logo" className="logo" />
-        <h1 className="site-title">Movie <span className="highlight">Search</span></h1>
+        <h1 className="site-title">
+          Movie <span className="highlight">Search</span>
+        </h1>
       </div>
 
       <nav className="nav-links">
-        <Link to="/" className="nav-btn">Home</Link>
-        <Link to="/favorites" className="nav-btn">Favorites</Link>
+        <button className="nav-btn" onClick={handleHomeClick}>
+          Home
+        </button>
+
+        <button
+          className="nav-btn"
+          onClick={() => navigate("/favorites")}
+        >
+          Favorites
+        </button>
       </nav>
     </header>
   );
 }
 
 export default Header;
+
 
 
 

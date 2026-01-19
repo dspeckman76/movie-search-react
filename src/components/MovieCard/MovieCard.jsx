@@ -1,82 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import placeholder from "../../assets/blank-poster.png";
 import "./MovieCard.css";
-import blankPoster from "../../assets/blank-poster.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
 
 function MovieCard({ movie }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [posterUrl, setPosterUrl] = useState(placeholder);
 
-  // Check if the movie is already in favorites on mount
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setIsFavorite(favorites.some((fav) => fav.imdbID === movie.imdbID));
-  }, [movie.imdbID]);
+    const fetchPosterFromTMDb = async () => {
+      try {
+        const TMDB_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
-  // Toggle favorite and show toast
-  const toggleFavorite = (e) => {
-    e.preventDefault(); // prevent navigation when clicking the bookmark
+        const res = await fetch(
+          `https://api.themoviedb.org/3/find/${movie.imdbID}?api_key=${TMDB_KEY}&external_source=imdb_id`
+        );
 
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const data = await res.json();
 
-    if (isFavorite) {
-      const updated = favorites.filter((fav) => fav.imdbID !== movie.imdbID);
-      localStorage.setItem("favorites", JSON.stringify(updated));
-      setIsFavorite(false);
-      toast.info(`Removed "${movie.title || movie.Title}" from Favorites`, {
-        autoClose: 2000,
-      });
+        if (data.movie_results && data.movie_results.length > 0) {
+          const posterPath = data.movie_results[0].poster_path;
+          if (posterPath) {
+            setPosterUrl(`https://image.tmdb.org/t/p/w500${posterPath}`);
+          }
+        }
+      } catch (err) {
+        console.error("TMDb poster fetch failed:", err);
+      }
+    };
+
+    // Prefer OMDb poster if available
+    if (movie.Poster && movie.Poster !== "N/A") {
+      setPosterUrl(movie.Poster);
     } else {
-      localStorage.setItem(
-        "favorites",
-        JSON.stringify([...favorites, movie])
-      );
-      setIsFavorite(true);
-      toast.success(`Added "${movie.title || movie.Title}" to Favorites`, {
-        autoClose: 2000,
-      });
+      fetchPosterFromTMDb();
     }
-  };
-
-  // Poster fallback
-  const posterUrl =
-    movie.poster && movie.poster !== "N/A"
-      ? movie.poster
-      : movie.Poster && movie.Poster !== "N/A"
-      ? movie.Poster
-      : blankPoster;
-
-  const title = movie.title || movie.Title || "Untitled";
-  const year = movie.year || movie.Year || "N/A";
+  }, [movie]);
 
   return (
-    <div className="movie-card-wrapper">
-      <Link
-        to={`/movie/${movie.imdbID}`}
-        state={{ fromSearch: true }}
-        className="movie-card-link"
-      >
-        <div className="movie-card">
-          <img src={posterUrl} alt={title} className="movie-poster" />
-          <div className="movie-info">
-            <h3 className="movie-title">{title}</h3>
-            <p className="movie-year">{year}</p>
-          </div>
-        </div>
-      </Link>
-
-      {/* Bookmark icon outside Link to prevent navigation */}
-      <FontAwesomeIcon
-        icon={faBookmark}
-        className={`favorite-btn ${isFavorite ? "favorited" : ""}`}
-        onClick={toggleFavorite}
-        title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+    <Link
+      to={`/movie/${movie.imdbID}`}
+      state={{ fromResults: true }}
+      className="movie__card"
+    >
+      <img
+        src={posterUrl}
+        alt={movie.Title}
+        className="movie__poster"
       />
-    </div>
+
+      <div className="movie__info">
+        <h3>{movie.Title}</h3>
+        <p>{movie.Year}</p>
+      </div>
+    </Link>
   );
 }
 
 export default MovieCard;
+
+
+
+
 
