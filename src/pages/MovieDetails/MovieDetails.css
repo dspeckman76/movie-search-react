@@ -1,0 +1,113 @@
+/* -------------------------------
+   Movie Details Styling
+---------------------------------*/
+
+.movie__details {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Top container: poster left, info right */
+.movie__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #1c1c1c;
+  border-radius: 10px;
+  position: relative;
+}
+
+.movie__poster-container {
+  flex: 0 0 clamp(140px, 25%, 300px);
+}
+
+.movie__poster {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.movie__info-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+  padding-left: 20px;
+}
+
+.movie__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Bottom container: full-width plot */
+.movie__bottom {
+  margin-top: 20px;
+  padding: 20px 40px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #1c1c1c;
+  border-radius: 10px;
+}
+
+.movie__plot--title {
+  text-align: center;
+  color: #fff;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  margin-bottom: 12px;
+}
+
+.movie__plot {
+  line-height: 1.6;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  margin-bottom: 12px;
+}
+
+.movie__awards {
+  font-style: italic;
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* Back Button */
+.movie__header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.back-button,
+.back-btn {
+  background-color: #0c46c2;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 500px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 300ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover,
+.back-btn:hover {
+  background-color: #0940a1;
+  border-color: yellow;
+  color: yellow;
+  transform: scale(1.1);
+}

@@ -2,15 +2,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import logoImg from "../../assets/logo-2.png"; // replace with your actual logo path
+import logoImg from "../../assets/logo-2.png";
 
-function Header() {
+function Header({ onHomeClick }) {
   const navigate = useNavigate();
+
+  const goHome = () => {
+    if (onHomeClick) {
+      onHomeClick(); // clear search + movies
+    }
+    navigate("/");
+  };
 
   return (
     <header className="header__row">
       {/* Logo + Title */}
-      <div className="logo">
+      <div
+        className="logo"
+        onClick={goHome}
+        style={{ cursor: "pointer" }}
+      >
         <img src={logoImg} alt="Logo" className="logo__img" />
         <div className="title">
           <p>
@@ -21,14 +32,11 @@ function Header() {
 
       {/* Navigation Buttons */}
       <nav className="nav-links">
-        <button
-          className="favorites__btn"
-          onClick={() => navigate("/")}
-        >
+        <button className="nav__btn" onClick={goHome}>
           Home
         </button>
         <button
-          className="favorites__btn"
+          className="nav__btn"
           onClick={() => navigate("/favorites")}
         >
           Favorites
@@ -39,6 +47,7 @@ function Header() {
 }
 
 export default Header;
+
 
 
 

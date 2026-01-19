@@ -39,10 +39,18 @@ function App() {
     }
   };
 
+  /**
+   * 🔹 Used ONLY by Nav Home
+   */
+  const handleReset = () => {
+    setMovies([]);
+    setSearchPerformed(false);
+  };
+
   return (
     <Router>
       <div className="app__wrapper">
-        <Header />
+        <Header onHomeClick={handleReset} />
 
         <main className="main">
           <Routes>
@@ -80,16 +88,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-

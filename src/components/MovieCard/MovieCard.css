@@ -1,10 +1,16 @@
+/* -------------------------------
+   Movie Card / Results Styling
+---------------------------------*/
+
 .movie__card {
   background: #1c1c1c;
   border-radius: 8px;
-  padding: 10px;
-  flex: 1 1 calc(25% - 20px);
-  min-width: 180px;
-  max-width: 250px;
+  padding: 15px;
+  position: relative;
+  flex: 1 1 calc(25% - 20px); /* 4 cards per row minus gap */
+  min-width: 180px;           /* prevents cards from shrinking too small */
+  max-width: 250px;           /* keeps cards from getting too wide */
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,10 +23,20 @@
   transform: scale(1.05);
 }
 
+.movie__card a {
+  color: #fff;
+  text-decoration: none;
+}
+
 .movie__poster {
   width: 100%;
   border-radius: 6px;
   margin-bottom: 8px;
+}
+
+.movie__card img {
+  width: 100%;
+  border-radius: 6px;
 }
 
 .movie__card h3 {
@@ -34,4 +50,11 @@
   margin: 0;
 }
 
-
+/* Movie cards grid container (Home page / Favorites page) */
+.results__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}

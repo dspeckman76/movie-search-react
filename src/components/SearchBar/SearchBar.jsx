@@ -1,4 +1,3 @@
-// src/components/SearchBar/SearchBar.jsx
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./SearchBar.css";

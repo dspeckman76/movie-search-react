@@ -1,22 +1,48 @@
-/* src/components/SearchBar/SearchBar.css */
+/* =========================
+   SEARCH BAR CONTAINER
+========================= */
 
-/* Outer search bar wrapper */
-.search-bar {
+.search__container {
+  background-color: #00070f;
+  height: 180px;
   display: flex;
-  justify-content: center;  /* center everything horizontally */
+  justify-content: center;
   align-items: center;
-  gap: 12px;                /* space between back button and input */
-  margin: 30px 0;
 }
 
-/* Reserve space for back button */
+.search__row {
+  width: 100%;
+  max-width: 448px;
+  margin: 0 auto;
+  padding: 52px;
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================
+   SEARCH BAR LAYOUT
+========================= */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 30px 0;
+  width: 100%;
+}
+
+/* Reserve space so centering never shifts */
 .back-slot {
-  width: 110px;             /* same width as back button */
+  width: 110px;
   display: flex;
   justify-content: flex-start;
 }
 
-/* Back button */
+/* =========================
+   BACK BUTTON
+========================= */
+
 .back-btn {
   background-color: #0c46c2;
   color: white;
@@ -28,12 +54,18 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Visually hidden but keeps space */
-.back-btn.hidden {
-  visibility: hidden;
+.back-btn:hover {
+  background-color: #0799ed;
 }
 
-/* Wrapper for input + search button */
+.back-btn.hidden {
+  visibility: hidden; /* keeps space */
+}
+
+/* =========================
+   SEARCH INPUT + BUTTON
+========================= */
+
 .search-input-wrapper {
   position: relative;
   display: flex;
@@ -41,25 +73,23 @@
   max-width: 500px;
 }
 
-/* Search input */
+/* Input field */
 .search-bar input {
   flex: 1;
-  padding: 10px 45px 10px 15px; /* right padding for search button */
-  border-radius: 50px;           /* pill shape */
+  padding: 10px 45px 10px 15px;
+  border-radius: 50px;
   border: 2px solid white;
   outline: none;
   font-size: 1rem;
-  color: #00070f;                 /* dark text */
+  color: #00070f;
   background-color: white;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Placeholder text */
 .search-bar input::placeholder {
-  color: #555; /* visible placeholder */
+  color: #555;
 }
 
-/* Focus effect */
 .search-bar input:focus {
   border-color: #0c46c2;
   box-shadow: 0 0 5px #0c46c2;
@@ -82,12 +112,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
-/* Search button hover */
 .search-bar .search-btn:hover {
-  background-color: #0940a1;
+  background-color: #0799ed;
+}
+
+/* =========================
+   LEGACY SEARCH BUTTON
+   (safe to keep)
+========================= */
+
+.search__btn {
+  flex-shrink: 0;
+  margin: 3px;
+  border: 2px solid #fff;
+  border-radius: 500px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #0c46c2;
+  padding: 12px;
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.search__btn:hover {
+  background-color: #0799ed;
 }
 
 

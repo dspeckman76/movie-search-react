@@ -1,0 +1,29 @@
+/* -------------------------------
+   Bookmark / Favorite Styling
+   Shared across MovieCard, MovieDetails, Favorites
+---------------------------------*/
+
+.movie__bookmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5rem;
+  color: gray;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.movie__bookmark:hover {
+  transform: scale(1.2);
+  color: #ffaa00;
+}
+
+.movie__bookmark.favorited {
+  color: #ffaa00;
+}
+
+.movie__bookmark.favorited:hover {
+  transform: scale(1.2);
+}
+
