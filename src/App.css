@@ -1,0 +1,60 @@
+/* -------------------------------
+   Global App Styling
+---------------------------------*/
+
+/* Reset defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body with background for all pages */
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('./assets/bg-1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  color: white;
+}
+
+/* App wrapper to manage header/footer layout */
+.app__wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content area (between header and footer) */
+.main {
+  flex: 1; /* ensures footer sticks to bottom */
+  padding: 20px 40px;
+}
+
+/* -------------------------------
+   ToastContainer Overrides
+---------------------------------*/
+.Toastify__toast {
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+.Toastify__toast--success {
+  background-color: #0c46c2;
+}
+
+.Toastify__toast--info {
+  background-color: #333;
+}
+
+.Toastify__toast--error {
+  background-color: #c20c0c;
+}
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+/* MAIN HEADER */
+.header {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00070f; /* deep dark background */
+  padding: 0 30px;
+  box-sizing: border-box;
+  border-bottom: 2px solid #0c46c2; /* subtle accent */
+  z-index: 10;
+}
+
+/* LEFT SIDE: LOGO + TITLE */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* LOGO IMAGE */
+.logo {
+  height: 60px;
+  width: auto;
+  filter: brightness(0) invert(1); /* make logo white */
+}
+
+/* TITLE TEXT */
+.site-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.site-title .highlight {
+  color: #0c46c2; /* blue accent */
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+
+/* BUTTON-LIKE LINKS */
+.nav-btn {
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0c46c2;
+  border: 2px solid #fff;
+  border-radius: 500px;
+  text-decoration: none;
+  transition: all 300ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn:hover {
+  background-color: #0940a1;
+  border-color: yellow;
+  color: yellow;
+}
+
+/* OPTIONAL ACTIVE LINK STYLING */
+/* If you want to highlight active route */
+.nav-btn.active {
+  background-color: #0940a1;
+  border-color: #fff;
+}
+
+
+
