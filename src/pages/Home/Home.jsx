@@ -1,42 +1,36 @@
 // src/pages/Home/Home.jsx
-import React, { useState } from "react";
+import React from "react";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import "./Home.css";
 
-function Home() {
-  const [movies, setMovies] = useState([]);
 
-  const handleSearch = async (query) => {
-    if (!query) return;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilm } from "@fortawesome/free-solid-svg-icons";
 
-    try {
-      const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
-      const res = await fetch(
-        `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${OMDB_KEY}`
-      );
-      const data = await res.json();
-
-      if (data.Search) setMovies(data.Search);
-      else setMovies([]);
-    } catch (err) {
-      console.error("Error fetching OMDb data:", err);
-      setMovies([]);
-    }
-  };
-
+function Home({ movies, searchPerformed, onSearch }) {
   return (
     <div className="home__wrapper">
-      {/* Center search bar and "no results" message */}
-      <div className="home__search-center">
-        <SearchBar onSearch={handleSearch} />
 
-        {movies.length === 0 && (
+      {/* Center search bar and messages */}
+      <div className="home__search-center">
+        <SearchBar onSearch={onSearch} />
+
+        {/* Show Start Exploring if no search performed */}
+        {!searchPerformed && (
+          <div className="start__exploring">
+            <FontAwesomeIcon icon={faFilm} size="6x" />
+            <h2>Start Exploring!</h2>
+          </div>
+        )}
+
+        {/* Show No Results if search performed but no movies */}
+        {searchPerformed && movies.length === 0 && (
           <p className="no-results">No movies found. Try searching!</p>
         )}
       </div>
 
-      {/* Movie cards */}
+      {/* Movie cards grid */}
       {movies.length > 0 && (
         <div className="results__container">
           {movies.map((movie) => (
@@ -49,6 +43,8 @@ function Home() {
 }
 
 export default Home;
+
+
 
 
 

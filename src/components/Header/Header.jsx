@@ -1,30 +1,34 @@
+// src/components/Header/Header.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
+import logoImg from "../../assets/logo-2.png"; // replace with your actual logo path
 
-function Header({ setMovies }) {
+function Header() {
   const navigate = useNavigate();
 
-  const handleHomeClick = () => {
-    if (setMovies) setMovies([]); // clear search results
-    navigate("/");
-  };
-
   return (
-    <header className="header">
-      <div className="header-left">
-        <h1 className="site-title">
-          Movie <span className="highlight">Search</span>
-        </h1>
+    <header className="header__row">
+      {/* Logo + Title */}
+      <div className="logo">
+        <img src={logoImg} alt="Logo" className="logo__img" />
+        <div className="title">
+          <p>
+            Movie <span>Search</span>
+          </p>
+        </div>
       </div>
 
+      {/* Navigation Buttons */}
       <nav className="nav-links">
-        <button className="nav-btn" onClick={handleHomeClick}>
+        <button
+          className="favorites__btn"
+          onClick={() => navigate("/")}
+        >
           Home
         </button>
-
         <button
-          className="nav-btn"
+          className="favorites__btn"
           onClick={() => navigate("/favorites")}
         >
           Favorites
@@ -35,6 +39,8 @@ function Header({ setMovies }) {
 }
 
 export default Header;
+
+
 
 
 

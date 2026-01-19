@@ -7,21 +7,55 @@
   width: 100%;
 }
 
-/* Centers the search bar and "no results" vertically stacked */
+/* Center search bar + messages */
 .home__search-center {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   margin: 40px 0;
-  gap: 20px; /* space between search bar and no results message */
+  gap: 20px; /* spacing between search bar and messages */
 }
 
-/* "No results" message styling */
+/* Start Exploring section */
+.start__exploring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  gap: 12px;
+}
+
+.start__exploring h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* No results message */
 .no-results {
   color: #fff;
   font-size: 1.2rem;
   text-align: center;
 }
+
+/* Movie cards grid */
+.results__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .start__exploring h2 {
+    font-size: 1.5rem;
+  }
+  .no-results {
+    font-size: 1rem;
+  }
+}
+
 
 
