@@ -12,14 +12,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-/**
- * 🔹 Favorites Context
- * Used by MovieCard, MovieDetails, Favorites
- */
+// Favorites context
 export const FavoritesContext = createContext();
 
 function App() {
-  // Search state
+  // Movies & search state
   const [movies, setMovies] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
@@ -29,28 +26,40 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  /**
-   * 🔹 Persist favorites to localStorage
-   */
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  /**
-   * 🔹 Search handler (OMDb)
-   */
+  // --- SEARCH HANDLER (OMDb) ---
   const handleSearch = async (query) => {
     if (!query) return;
 
     try {
       const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
+
+      // Step 1: fetch basic search results
       const res = await fetch(
         `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${OMDB_KEY}`
       );
       const data = await res.json();
 
-      if (data.Search) {
-        setMovies(data.Search);
+      if (data.Search && data.Search.length > 0) {
+        // Step 2: fetch full details for each movie (includes IMDb rating)
+        const detailedMovies = await Promise.all(
+          data.Search.map(async (m) => {
+            try {
+              const resDetails = await fetch(
+                `https://www.omdbapi.com/?i=${m.imdbID}&apikey=${OMDB_KEY}`
+              );
+              const details = await resDetails.json();
+              return { ...m, imdbRating: details.imdbRating || "0" };
+            } catch {
+              return { ...m, imdbRating: "0" };
+            }
+          })
+        );
+
+        setMovies(detailedMovies);
       } else {
         setMovies([]);
       }
@@ -63,43 +72,43 @@ function App() {
     }
   };
 
-  /**
-   * 🔹 Used ONLY by Header Home button
-   */
+  // Reset search (used by Header Home button)
   const handleReset = () => {
     setMovies([]);
     setSearchPerformed(false);
   };
 
-  /**
-   * 🔹 Favorites helpers
-   */
-  const isFavorite = (imdbID) => {
-    return favorites.some((movie) => movie.imdbID === imdbID);
-  };
+  // --- FAVORITES LOGIC ---
+  const isFavorite = (imdbID) => favorites.some((movie) => movie.imdbID === imdbID);
 
-  const toggleFavorite = (movie) => {
-    setFavorites((prev) => {
-      const exists = prev.some((m) => m.imdbID === movie.imdbID);
+  const toggleFavorite = async (movie) => {
+    const exists = favorites.some((m) => m.imdbID === movie.imdbID);
 
-      if (exists) {
-        toast.info("Removed from Favorites");
-        return prev.filter((m) => m.imdbID !== movie.imdbID);
-      } else {
+    if (exists) {
+      toast.info("Removed from Favorites");
+      setFavorites((prev) => prev.filter((m) => m.imdbID !== movie.imdbID));
+    } else {
+      try {
+        const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
+        const res = await fetch(
+          `https://www.omdbapi.com/?i=${movie.imdbID}&apikey=${OMDB_KEY}`
+        );
+        const details = await res.json();
+
         toast.success("Added to Favorites");
-        return [...prev, movie];
+        setFavorites((prev) => [
+          ...prev,
+          { ...movie, imdbRating: details.imdbRating || "0" },
+        ]);
+      } catch (err) {
+        console.error("Failed to fetch full movie details:", err);
+        toast.error("Failed to add to Favorites");
       }
-    });
+    }
   };
 
   return (
-    <FavoritesContext.Provider
-      value={{
-        favorites,
-        isFavorite,
-        toggleFavorite,
-      }}
-    >
+    <FavoritesContext.Provider value={{ favorites, isFavorite, toggleFavorite }}>
       <Router>
         <div className="app__wrapper">
           <Header onHomeClick={handleReset} />
@@ -112,17 +121,15 @@ function App() {
                   <Home
                     movies={movies}
                     searchPerformed={searchPerformed}
-                    onSearch={handleSearch}
+                    onSearch={handleSearch} // Home calls App.js search
+                    onReset={handleReset}   // optional reset on back
                   />
                 }
               />
 
               <Route path="/movie/:id" element={<MovieDetails />} />
 
-              <Route
-                path="/favorites"
-                element={<Favorites favorites={favorites} />}
-              />
+              <Route path="/favorites" element={<Favorites />} />
             </Routes>
           </main>
 
@@ -134,6 +141,7 @@ function App() {
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
+            rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
@@ -145,4 +153,5 @@ function App() {
 }
 
 export default App;
+
 

@@ -17,3 +17,57 @@
   line-height: 1.6;
 }
 
+/* -------------------------------
+   Controls (Back + Sort)
+---------------------------------*/
+/* -------------------------------
+   Controls (Back + Sort)
+---------------------------------*/
+.favorites__controls {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+  gap: 12px; /* slightly closer together */
+  margin-bottom: 30px;
+}
+
+/* Make SortFilter inline with Back button */
+.favorites__controls .sortfilter {
+  width: auto;           /* shrink to fit content */
+  margin: 0;             /* remove extra margin */
+  display: inline-block;   /* inline-flex aligns with back button */
+  vertical-align: middle;
+}
+
+
+.back-btn {
+  background-color: #0c46c2;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 500px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 300ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:hover {
+  background-color: #0940a1;
+  border-color: yellow;
+  color: yellow;
+  transform: scale(1.1);
+}
+
+/* Movie cards grid container */
+.results__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+

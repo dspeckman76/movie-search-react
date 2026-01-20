@@ -1,0 +1,78 @@
+/* Wrapper */
+.sortfilter {
+  width: 220px;
+  margin: 20px auto;
+  overflow: hidden;
+
+  background-color: #0c46c2;
+  border: 2px solid #fff;
+  border-radius: 500px;
+
+  transition: all 0.35s ease;
+}
+
+/* Expanded state */
+.sortfilter.open {
+  border-radius: 14px;
+}
+
+/* Trigger button */
+.sortfilter__trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 12px 18px;
+
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+/* Arrow */
+.sortfilter__arrow {
+  font-size: 0.8rem;
+}
+
+/* Collapsible content */
+.sortfilter__content {
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.35s ease;
+
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c1c;
+}
+
+/* Open animation */
+.sortfilter.open .sortfilter__content {
+  max-height: 200px;
+  opacity: 1;
+}
+
+/* Option buttons */
+.sortfilter__content button {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  color: #fff;
+  text-align: left;
+  font-size: 0.95rem;
+
+  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.sortfilter__content button:hover {
+  background-color: #0940a1;
+  color: yellow;
+}
+
+
+
+
