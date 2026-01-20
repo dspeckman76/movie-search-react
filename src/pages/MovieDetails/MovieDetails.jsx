@@ -1,22 +1,25 @@
-// src/pages/MovieDetails/MovieDetails.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./MovieDetails.css";
 import placeholder from "../../assets/blank-poster.png";
-import SearchBar from "../../components/SearchBar/SearchBar";
+import Bookmark from "../../components/Bookmark/Bookmark";
+import { FavoritesContext } from "../../App";
 
 function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+
   const [movie, setMovie] = useState(null);
   const [posterUrl, setPosterUrl] = useState(placeholder);
 
-  // Extract previous search query from URL (if any)
+  // Extract previous search query
   const searchParams = new URLSearchParams(location.search);
   const prevSearch = searchParams.get("search") || "";
 
-  // Fetch movie details from OMDb
+  // Fetch movie details (OMDb)
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
@@ -34,7 +37,7 @@ function MovieDetails() {
     fetchMovieDetails();
   }, [id]);
 
-  // Fetch poster from TMDb using IMDb ID
+  // Fetch poster (TMDb)
   useEffect(() => {
     const fetchTMDbPoster = async () => {
       try {
@@ -43,6 +46,7 @@ function MovieDetails() {
           `https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_KEY}&external_source=imdb_id`
         );
         const data = await res.json();
+
         if (
           data.movie_results &&
           data.movie_results.length > 0 &&
@@ -60,7 +64,7 @@ function MovieDetails() {
     fetchTMDbPoster();
   }, [id]);
 
-  // Back button logic: go to Home with previous search
+  // Back button logic
   const handleBack = () => {
     if (prevSearch) {
       navigate(`/?search=${encodeURIComponent(prevSearch)}`);
@@ -70,20 +74,27 @@ function MovieDetails() {
   };
 
   if (!movie) {
-    return <p style={{ textAlign: "center", marginTop: "50px" }}>Loading...</p>;
+    return (
+      <p style={{ textAlign: "center", marginTop: "50px" }}>Loading...</p>
+    );
   }
 
   return (
     <div className="movie__details">
-      {/* Back button */}
+      {/* Back Button */}
       <div className="movie__header-top">
         <button className="back-btn" onClick={handleBack}>
           ← Back
         </button>
       </div>
 
-      {/* Top: poster + info */}
+      {/* Top Section */}
       <div className="movie__top">
+      <Bookmark
+        isFavorited={isFavorite(movie.imdbID)}
+        onClick={() => toggleFavorite(movie)}
+      />
+
         <div className="movie__poster-container">
           <img
             className="movie__poster"
@@ -97,6 +108,7 @@ function MovieDetails() {
             <h2>{movie.Title}</h2>
             <p>{movie.Year}</p>
           </div>
+
           <p><strong>Genre:</strong> {movie.Genre}</p>
           <p><strong>Director:</strong> {movie.Director}</p>
           <p><strong>Actors:</strong> {movie.Actors}</p>
@@ -105,7 +117,7 @@ function MovieDetails() {
         </div>
       </div>
 
-      {/* Bottom: plot */}
+      {/* Plot */}
       <div className="movie__bottom">
         <h3 className="movie__plot--title">Plot</h3>
         <p className="movie__plot">{movie.Plot}</p>
@@ -115,6 +127,8 @@ function MovieDetails() {
 }
 
 export default MovieDetails;
+
+
 
 
 

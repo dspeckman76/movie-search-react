@@ -1,18 +1,21 @@
-// src/components/MovieCard/MovieCard.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./MovieCard.css";
 import placeholder from "../../assets/blank-poster.png";
+import Bookmark from "../Bookmark/Bookmark";
+import { FavoritesContext } from "../../App";
 
 function MovieCard({ movie }) {
   const [posterUrl, setPosterUrl] = useState(placeholder);
   const location = useLocation();
 
-  // Extract current search query from Home page URL
+  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+
+  // Preserve search query in URL
   const searchParams = new URLSearchParams(location.search);
   const currentQuery = searchParams.get("search") || "";
 
-  // Fetch poster from TMDb using IMDb ID
+  // Fetch poster from TMDb
   useEffect(() => {
     const fetchTMDbPoster = async () => {
       try {
@@ -21,6 +24,7 @@ function MovieCard({ movie }) {
           `https://api.themoviedb.org/3/find/${movie.imdbID}?api_key=${TMDB_KEY}&external_source=imdb_id`
         );
         const data = await res.json();
+
         if (
           data.movie_results &&
           data.movie_results.length > 0 &&
@@ -40,8 +44,21 @@ function MovieCard({ movie }) {
 
   return (
     <div className="movie__card">
-      {/* Include current search query in the link */}
-      <Link to={`/movie/${movie.imdbID}?search=${encodeURIComponent(currentQuery)}`}>
+      {/* Bookmark */}
+      <Bookmark
+        isFavorited={isFavorite(movie.imdbID)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFavorite(movie);
+        }}
+      />
+      
+      <Link
+        to={`/movie/${movie.imdbID}?search=${encodeURIComponent(
+          currentQuery
+        )}`}
+      >
         <img src={posterUrl || placeholder} alt={movie.Title} />
         <h3>{movie.Title}</h3>
         <p>{movie.Year}</p>
@@ -51,6 +68,8 @@ function MovieCard({ movie }) {
 }
 
 export default MovieCard;
+
+
 
 
 

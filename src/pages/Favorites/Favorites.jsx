@@ -1,42 +1,30 @@
-import React, { useEffect, useState } from "react";
-import BackButton from "../../components/BackButton/BackButton";
+import React, { useContext } from "react";
+import { FavoritesContext } from "../../App";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import "./Favorites.css";
 
 function Favorites() {
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(stored);
-  }, []);
+  const { favorites } = useContext(FavoritesContext);
 
   return (
-    <>
+    <div className="favorites__wrapper">
+      <h2 className="favorites__title">Your Favorites</h2>
 
-
-      <main className="main">
-        <BackButton fallback="/" />
-
-        <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-          Your Favorites
-        </h1>
-
-        <div className="results__container">
-          {favorites.length > 0 ? (
-            favorites.map((movie) => (
-              <MovieCard key={movie.imdbID} movie={movie} />
-            ))
-          ) : (
-            <p style={{ textAlign: "center" }}>
-              No favorites yet.
-            </p>
-          )}
+      {favorites.length === 0 ? (
+        <div className="favorites__empty">
+          <p>You haven’t added any favorites yet.</p>
+          <p>Click the bookmark icon on a movie to save it here.</p>
         </div>
-      </main>
-
-    </>
+      ) : (
+        <div className="results__container">
+          {favorites.map((movie) => (
+            <MovieCard key={movie.imdbID} movie={movie} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
 export default Favorites;
+
