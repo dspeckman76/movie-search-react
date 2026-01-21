@@ -116,7 +116,6 @@
    Loading State + Skeleton
 ---------------------------------*/
 
-/* Loading spinner text */
 .loading-state {
   text-align: center;
   font-size: 1.5rem;
@@ -124,7 +123,6 @@
   color: white;
 }
 
-/* Skeleton wrapper for top section */
 .skeleton__top {
   display: flex;
   flex-wrap: wrap;
@@ -135,7 +133,6 @@
   padding: 20px;
 }
 
-/* Skeleton poster */
 .skeleton__poster {
   width: clamp(140px, 25%, 300px);
   height: 400px;
@@ -145,7 +142,6 @@
   overflow: hidden;
 }
 
-/* Skeleton info container */
 .skeleton__info {
   flex: 1;
   display: flex;
@@ -154,7 +150,6 @@
   min-width: 200px;
 }
 
-/* Individual skeleton line */
 .skeleton__line {
   height: 16px;
   border-radius: 4px;
@@ -164,12 +159,83 @@
   overflow: hidden;
 }
 
-/* Shimmer effect */
 .shimmer::after {
   content: "";
   position: absolute;
   top: 0;
   left: -150px;
   width: 150px;
-  height: 10
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shimmer 1.5s infinite;
 }
+
+@keyframes shimmer {
+  0% { left: -150px; }
+  100% { left: 100%; }
+}
+
+/* =========================
+   RESPONSIVE LAYOUT
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .movie__top {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .movie__poster-container {
+    flex: 1 1 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .movie__info-container {
+    padding-left: 0;
+    margin-top: 20px;
+  }
+
+  .movie__bottom {
+    padding: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .movie__top {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .movie__poster {
+    max-height: 350px;
+  }
+
+  .movie__bottom {
+    padding: 15px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .movie__poster {
+    width: 100%;
+    height: auto;
+  }
+
+  .movie__info-container {
+    gap: 10px;
+  }
+
+  .movie__plot--title {
+    font-size: 1.2rem;
+  }
+
+  .movie__plot {
+    font-size: 0.95rem;
+  }
+}
+
+

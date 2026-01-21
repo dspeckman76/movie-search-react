@@ -1,15 +1,14 @@
-// src/pages/MovieDetails/MovieDetails.jsx
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { FavoritesContext } from "../../App";
 import BackButton from "../../components/BackButton/BackButton";
 import Bookmark from "../../components/Bookmark/Bookmark";
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
 import "./MovieDetails.css";
 
 function MovieDetails() {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
 
   const [movie, setMovie] = useState(null);
@@ -42,13 +41,6 @@ function MovieDetails() {
     fetchMovie();
   }, [id]);
 
-  // Skeleton lines helper
-  const renderSkeletonLines = (num = 4) => {
-    return Array.from({ length: num }).map((_, idx) => (
-      <div key={idx} className="skeleton__line shimmer"></div>
-    ));
-  };
-
   return (
     <div className="movie__details">
       <div className="movie__header-top">
@@ -58,11 +50,7 @@ function MovieDetails() {
       {loading ? (
         <>
           <div className="loading-state">Loading...</div>
-
-          <div className="skeleton__top">
-            <div className="skeleton__poster shimmer"></div>
-            <div className="skeleton__info">{renderSkeletonLines(6)}</div>
-          </div>
+          <SkeletonCard type="details" lines={6} />
         </>
       ) : movie ? (
         <>
@@ -108,6 +96,7 @@ function MovieDetails() {
 }
 
 export default MovieDetails;
+
 
 
 

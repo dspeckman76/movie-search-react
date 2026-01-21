@@ -17,25 +17,20 @@
   line-height: 1.6;
 }
 
-/* -------------------------------
-   Controls (Back + Sort)
----------------------------------*/
 .favorites__controls {
   display: flex;
-  justify-content: center; /* center horizontally */
+  justify-content: center;
   align-items: center;
-  gap: 12px; /* slightly closer together */
+  gap: 12px;
   margin-bottom: 30px;
 }
 
-/* Make SortFilter inline with Back button */
 .favorites__controls .sortfilter {
-  width: auto;           /* shrink to fit content */
-  margin: 0;             /* remove extra margin */
-  display: inline-block;   /* inline-flex aligns with back button */
+  width: auto;
+  margin: 0;
+  display: inline-block;
   vertical-align: middle;
 }
-
 
 .back-btn {
   background-color: #0c46c2;
@@ -59,7 +54,6 @@
   transform: scale(1.1);
 }
 
-/* Movie cards grid container */
 .results__container {
   display: flex;
   flex-wrap: wrap;
@@ -68,7 +62,6 @@
   justify-content: center;
 }
 
-/* Loading spinner above skeletons */
 .loading-state {
   text-align: center;
   font-size: 1.5rem;
@@ -76,57 +69,45 @@
   margin: 20px 0;
 }
 
-/* Skeleton cards for favorites */
-.movie__card.skeleton {
-  background: #2c2c2c;
-  border-radius: 8px;
-  padding: 15px;
-  flex: 1 1 calc(25% - 20px);
-  min-width: 180px;
-  max-width: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+/* =========================
+   RESPONSIVE LAYOUT
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .results__container {
+    gap: 16px;
+  }
+
+  .movie__card {
+    flex: 1 1 calc(33.333% - 16px); /* 3 cards per row */
+  }
+
+  .favorites__controls {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
-/* Shimmer animation */
-.shimmer {
-  position: relative;
-  overflow: hidden;
-  background-color: #444;
+/* Mobile */
+@media (max-width: 768px) {
+  .results__container {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .movie__card {
+    flex: 1 1 calc(50% - 12px); /* 2 cards per row */
+    min-width: 140px;
+  }
 }
 
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150px;
-  width: 150px;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shimmer 1.5s infinite;
+/* Small mobile */
+@media (max-width: 480px) {
+  .movie__card {
+    flex: 1 1 100%; /* 1 card per row */
+    min-width: auto;
+  }
 }
 
-@keyframes shimmer {
-  0% { left: -150px; }
-  100% { left: 100%; }
-}
 
-.skeleton__poster {
-  width: 100%;
-  height: 280px;
-  border-radius: 6px;
-}
-
-.skeleton__title {
-  width: 80%;
-  height: 16px;
-  border-radius: 4px;
-}
-
-.skeleton__year {
-  width: 50%;
-  height: 14px;
-  border-radius: 4px;
-}

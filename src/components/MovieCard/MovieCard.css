@@ -58,3 +58,16 @@
   padding: 20px;
   justify-content: center;
 }
+
+/* Already mostly responsive via parent containers */
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+  .movie__card h3 {
+    font-size: 0.9rem;
+  }
+
+  .movie__card p {
+    font-size: 0.8rem;
+  }
+}

@@ -119,10 +119,6 @@
   background-color: #0799ed;
 }
 
-/* =========================
-   LEGACY SEARCH BUTTON
-   (safe to keep)
-========================= */
 
 .search__btn {
   flex-shrink: 0;
@@ -140,6 +136,66 @@
 
 .search__btn:hover {
   background-color: #0799ed;
+}
+
+
+/* =========================
+   RESPONSIVE LAYOUT
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .search-bar {
+    gap: 8px;
+  }
+
+  .search-bar input {
+    font-size: 0.95rem;
+  }
+
+  .search-bar .search-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .back-btn {
+    align-self: flex-start;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .back-btn {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  .search-bar input {
+    padding: 8px 40px 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .search-bar .search-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
 }
 
 

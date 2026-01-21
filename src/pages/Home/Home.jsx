@@ -1,9 +1,9 @@
-// src/pages/Home/Home.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SortFilter from "../../components/SortFilter/SortFilter";
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
 import "./Home.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,8 +30,6 @@ function Home({ movies, searchPerformed, onSearch, loading }) {
     );
     setFilteredMovies(sorted);
   };
-
-  const skeletonCards = Array.from({ length: 6 });
 
   return (
     <div className="home__wrapper">
@@ -65,13 +63,7 @@ function Home({ movies, searchPerformed, onSearch, loading }) {
 
       <div className="results__container">
         {loading
-          ? skeletonCards.map((_, idx) => (
-              <div key={idx} className="movie__card skeleton">
-                <div className="skeleton__poster shimmer" />
-                <div className="skeleton__title shimmer" />
-                <div className="skeleton__year shimmer" />
-              </div>
-            ))
+          ? Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
           : filteredMovies.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)}
       </div>
     </div>
@@ -79,6 +71,8 @@ function Home({ movies, searchPerformed, onSearch, loading }) {
 }
 
 export default Home;
+
+
 
 
 

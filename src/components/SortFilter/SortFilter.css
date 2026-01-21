@@ -74,5 +74,54 @@
 }
 
 
+/* =========================
+   RESPONSIVE LAYOUT
+========================= */
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .sortfilter {
+    width: 180px;
+  }
+
+  .sortfilter__content button {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sortfilter {
+    width: 140px;
+    margin: 10px auto;
+  }
+
+  .sortfilter__trigger {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+
+  .sortfilter__content button {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .sortfilter {
+    width: 120px;
+  }
+
+  .sortfilter__trigger {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .sortfilter__content button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+}
 

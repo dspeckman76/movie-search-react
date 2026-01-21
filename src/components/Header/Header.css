@@ -6,6 +6,7 @@
   flex-wrap: wrap;
 }
 
+/* Logo */
 .logo {
   display: flex;
   align-items: center;
@@ -28,6 +29,7 @@
   color: #0c46c2;
 }
 
+/* Navigation */
 .nav-links {
   display: flex;
   align-items: center;
@@ -59,6 +61,77 @@
 .nav__btn:active {
   background: #42e7ef;
   color: #fff;
+}
+
+/* =========================
+   RESPONSIVE LAYOUT
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .header__row {
+    padding: 16px 20px;
+  }
+
+  .logo__img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .title p {
+    font-size: 1.6rem;
+  }
+
+  .nav__btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .header__row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .logo__img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .title p {
+    font-size: 1.4rem;
+  }
+
+  .nav__btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .logo__img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .title p {
+    font-size: 1.2rem;
+  }
+
+  .nav__btn {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+  }
 }
 
 

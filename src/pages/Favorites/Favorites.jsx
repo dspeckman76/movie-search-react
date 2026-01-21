@@ -1,9 +1,9 @@
-// src/pages/Favorites/Favorites.jsx
 import React, { useContext, useState, useEffect } from "react";
 import { FavoritesContext } from "../../App";
 import { useNavigate, useLocation } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import SortFilter from "../../components/SortFilter/SortFilter";
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
 import "./Favorites.css";
 
 function Favorites() {
@@ -42,8 +42,6 @@ function Favorites() {
     setFilteredFavorites(sorted);
   };
 
-  const skeletonCards = Array.from({ length: 6 });
-
   return (
     <div className="favorites__wrapper">
       {/* Back + Sort centered */}
@@ -71,13 +69,7 @@ function Favorites() {
 
       <div className="results__container">
         {loading
-          ? skeletonCards.map((_, idx) => (
-              <div key={idx} className="movie__card skeleton">
-                <div className="skeleton__poster shimmer" />
-                <div className="skeleton__title shimmer" />
-                <div className="skeleton__year shimmer" />
-              </div>
-            ))
+          ? Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
           : filteredFavorites.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)}
       </div>
     </div>
@@ -85,6 +77,8 @@ function Favorites() {
 }
 
 export default Favorites;
+
+
 
 
 
