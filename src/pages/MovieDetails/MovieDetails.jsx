@@ -1,132 +1,114 @@
+// src/pages/MovieDetails/MovieDetails.jsx
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import "./MovieDetails.css";
-import placeholder from "../../assets/blank-poster.png";
-import Bookmark from "../../components/Bookmark/Bookmark";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FavoritesContext } from "../../App";
+import BackButton from "../../components/BackButton/BackButton";
+import Bookmark from "../../components/Bookmark/Bookmark";
+import "./MovieDetails.css";
 
 function MovieDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
 
   const [movie, setMovie] = useState(null);
-  const [posterUrl, setPosterUrl] = useState(placeholder);
+  const [loading, setLoading] = useState(true);
 
-  // Extract previous search query
   const searchParams = new URLSearchParams(location.search);
   const prevSearch = searchParams.get("search") || "";
 
-  // Fetch movie details (OMDb)
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchMovie = async () => {
+      setLoading(true);
+      const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
+
       try {
-        const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
         const res = await fetch(
           `https://www.omdbapi.com/?i=${id}&apikey=${OMDB_KEY}`
         );
         const data = await res.json();
-        if (data) setMovie(data);
+        setMovie(data);
       } catch (err) {
         console.error("Error fetching movie details:", err);
       }
+
+      // Simulate 1-second loading
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     };
 
-    fetchMovieDetails();
+    fetchMovie();
   }, [id]);
 
-  // Fetch poster (TMDb)
-  useEffect(() => {
-    const fetchTMDbPoster = async () => {
-      try {
-        const TMDB_KEY = process.env.REACT_APP_TMDB_API_KEY;
-        const res = await fetch(
-          `https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_KEY}&external_source=imdb_id`
-        );
-        const data = await res.json();
-
-        if (
-          data.movie_results &&
-          data.movie_results.length > 0 &&
-          data.movie_results[0].poster_path
-        ) {
-          setPosterUrl(
-            `https://image.tmdb.org/t/p/w500${data.movie_results[0].poster_path}`
-          );
-        }
-      } catch (err) {
-        console.error("Error fetching TMDb poster:", err);
-      }
-    };
-
-    fetchTMDbPoster();
-  }, [id]);
-
-  // Back button logic
-  const handleBack = () => {
-    if (prevSearch) {
-      navigate(`/?search=${encodeURIComponent(prevSearch)}`);
-    } else {
-      navigate("/");
-    }
+  // Skeleton lines helper
+  const renderSkeletonLines = (num = 4) => {
+    return Array.from({ length: num }).map((_, idx) => (
+      <div key={idx} className="skeleton__line shimmer"></div>
+    ));
   };
-
-  if (!movie) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "50px" }}>Loading...</p>
-    );
-  }
 
   return (
     <div className="movie__details">
-      {/* Back Button */}
       <div className="movie__header-top">
-        <button className="back-btn" onClick={handleBack}>
-          ← Back
-        </button>
+        <BackButton fallback="/" />
       </div>
 
-      {/* Top Section */}
-      <div className="movie__top">
-      <Bookmark
-        isFavorited={isFavorite(movie.imdbID)}
-        onClick={() => toggleFavorite(movie)}
-      />
+      {loading ? (
+        <>
+          <div className="loading-state">Loading...</div>
 
-        <div className="movie__poster-container">
-          <img
-            className="movie__poster"
-            src={posterUrl || placeholder}
-            alt={movie.Title}
-          />
-        </div>
+          <div className="skeleton__top">
+            <div className="skeleton__poster shimmer"></div>
+            <div className="skeleton__info">{renderSkeletonLines(6)}</div>
+          </div>
+        </>
+      ) : movie ? (
+        <>
+          <div className="movie__top">
+            <div className="movie__poster-container">
+              <img
+                src={movie.Poster !== "N/A" ? movie.Poster : "/assets/blank-poster.png"}
+                alt={movie.Title}
+                className="movie__poster"
+              />
+            </div>
 
-        <div className="movie__info-container">
-          <div className="movie__title-row">
-            <h2>{movie.Title}</h2>
-            <p>{movie.Year}</p>
+            <div className="movie__info-container">
+              <div className="movie__title-row">
+                <h2>{movie.Title} ({movie.Year})</h2>
+                <Bookmark
+                  isFavorited={isFavorite(movie.imdbID)}
+                  onClick={() => toggleFavorite(movie)}
+                />
+              </div>
+
+              <p>Rated: {movie.Rated}</p>
+              <p>Genre: {movie.Genre}</p>
+              <p>Director: {movie.Director}</p>
+              <p>Actors: {movie.Actors}</p>
+              <p>IMDB Rating: {movie.imdbRating}</p>
+            </div>
           </div>
 
-          <p><strong>Genre:</strong> {movie.Genre}</p>
-          <p><strong>Director:</strong> {movie.Director}</p>
-          <p><strong>Actors:</strong> {movie.Actors}</p>
-          <p><strong>IMDb Rating:</strong> {movie.imdbRating}</p>
-          <p><strong>Awards:</strong> {movie.Awards}</p>
-        </div>
-      </div>
-
-      {/* Plot */}
-      <div className="movie__bottom">
-        <h3 className="movie__plot--title">Plot</h3>
-        <p className="movie__plot">{movie.Plot}</p>
-      </div>
+          <div className="movie__bottom">
+            <h3 className="movie__plot--title">Plot</h3>
+            <p className="movie__plot">{movie.Plot}</p>
+            {movie.Awards && <p className="movie__awards">Awards: {movie.Awards}</p>}
+          </div>
+        </>
+      ) : (
+        <p style={{ textAlign: "center", marginTop: "40px" }}>
+          Movie details not found.
+        </p>
+      )}
     </div>
   );
 }
 
 export default MovieDetails;
+
 
 
 

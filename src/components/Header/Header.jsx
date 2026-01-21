@@ -17,11 +17,7 @@ function Header({ onHomeClick }) {
   return (
     <header className="header__row">
       {/* Logo + Title */}
-      <div
-        className="logo"
-        onClick={goHome}
-        style={{ cursor: "pointer" }}
-      >
+      <div className="logo">
         <img src={logoImg} alt="Logo" className="logo__img" />
         <div className="title">
           <p>

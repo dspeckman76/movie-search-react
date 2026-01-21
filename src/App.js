@@ -12,15 +12,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-// Favorites context
+/**
+ * 🔹 Favorites Context
+ * Used by MovieCard, MovieDetails, Favorites
+ */
 export const FavoritesContext = createContext();
 
 function App() {
-  // Movies & search state
   const [movies, setMovies] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Favorites state (persisted)
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem("favorites");
     return saved ? JSON.parse(saved) : [];
@@ -30,21 +32,18 @@ function App() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // --- SEARCH HANDLER (OMDb) ---
   const handleSearch = async (query) => {
     if (!query) return;
+    setLoading(true);
 
     try {
       const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
-
-      // Step 1: fetch basic search results
       const res = await fetch(
         `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${OMDB_KEY}`
       );
       const data = await res.json();
 
       if (data.Search && data.Search.length > 0) {
-        // Step 2: fetch full details for each movie (includes IMDb rating)
         const detailedMovies = await Promise.all(
           data.Search.map(async (m) => {
             try {
@@ -53,32 +52,41 @@ function App() {
               );
               const details = await resDetails.json();
               return { ...m, imdbRating: details.imdbRating || "0" };
-            } catch {
+            } catch (err) {
+              console.error("Error fetching movie details:", err);
               return { ...m, imdbRating: "0" };
             }
           })
         );
 
-        setMovies(detailedMovies);
+        // Force 1-second minimum loading
+        setTimeout(() => {
+          setMovies(detailedMovies);
+          setSearchPerformed(true);
+          setLoading(false);
+        }, 1000);
       } else {
-        setMovies([]);
+        setTimeout(() => {
+          setMovies([]);
+          setSearchPerformed(true);
+          setLoading(false);
+        }, 1000);
       }
-
-      setSearchPerformed(true);
     } catch (err) {
       console.error("Error fetching OMDb data:", err);
-      setMovies([]);
-      setSearchPerformed(true);
+      setTimeout(() => {
+        setMovies([]);
+        setSearchPerformed(true);
+        setLoading(false);
+      }, 1000);
     }
   };
 
-  // Reset search (used by Header Home button)
   const handleReset = () => {
     setMovies([]);
     setSearchPerformed(false);
   };
 
-  // --- FAVORITES LOGIC ---
   const isFavorite = (imdbID) => favorites.some((movie) => movie.imdbID === imdbID);
 
   const toggleFavorite = async (movie) => {
@@ -121,20 +129,17 @@ function App() {
                   <Home
                     movies={movies}
                     searchPerformed={searchPerformed}
-                    onSearch={handleSearch} // Home calls App.js search
-                    onReset={handleReset}   // optional reset on back
+                    onSearch={handleSearch}
+                    loading={loading}
                   />
                 }
               />
-
               <Route path="/movie/:id" element={<MovieDetails />} />
-
-              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/favorites" element={<Favorites favorites={favorites} />} />
             </Routes>
           </main>
 
           <Footer />
-
           <ToastContainer
             position="top-right"
             autoClose={2000}
@@ -153,5 +158,6 @@ function App() {
 }
 
 export default App;
+
 
 
