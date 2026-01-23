@@ -1,112 +1,73 @@
-.favorites__wrapper {
-  padding: 40px 20px;
-  min-height: 60vh;
+/* src/pages/Favorites/Favorites.css */
+
+/* === Page container (MATCHES Home) === */
+.favorites__container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 THIS centers the grid */
 }
 
-.favorites__title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
-
-.favorites__empty {
-  text-align: center;
-  color: #ccc;
-  font-size: 1.1rem;
-  margin-top: 60px;
-  line-height: 1.6;
-}
-
-.favorites__controls {
+/* === Toolbar === */
+.favorites__toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
-.favorites__controls .sortfilter {
-  width: auto;
-  margin: 0;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.back-btn {
+/* Back button styling */
+.back-button-favorites {
   background-color: #0c46c2;
   color: #fff;
   border: 2px solid #fff;
   border-radius: 500px;
-  padding: 10px 22px;
-  font-size: 0.95rem;
+  padding: 8px 18px;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 300ms ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.back-btn:hover {
+.back-button-favorites:hover {
   background-color: #0940a1;
   border-color: yellow;
   color: yellow;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
+/* === Movie grid (IDENTICAL to Home) === */
 .results__container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 20px;
-  padding: 20px;
-  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.loading-state {
+/* Empty state */
+.favorites__empty {
   text-align: center;
-  font-size: 1.5rem;
-  color: white;
-  margin: 20px 0;
+  width: 100%;
+  margin-top: 40px;
+  font-size: 1.1rem;
+  color: #fff;
 }
 
-/* =========================
-   RESPONSIVE LAYOUT
-========================= */
-
-/* Tablet */
-@media (max-width: 1024px) {
-  .results__container {
-    gap: 16px;
-  }
-
-  .movie__card {
-    flex: 1 1 calc(33.333% - 16px); /* 3 cards per row */
-  }
-
-  .favorites__controls {
-    flex-direction: column;
-    gap: 8px;
-  }
-}
-
-/* Mobile */
+/* === Responsive === */
 @media (max-width: 768px) {
+  .favorites__container {
+    padding: 16px;
+  }
+
   .results__container {
     gap: 12px;
-    padding: 10px;
-  }
-
-  .movie__card {
-    flex: 1 1 calc(50% - 12px); /* 2 cards per row */
-    min-width: 140px;
   }
 }
 
-/* Small mobile */
 @media (max-width: 480px) {
-  .movie__card {
-    flex: 1 1 100%; /* 1 card per row */
-    min-width: auto;
+  .results__container {
+    gap: 10px;
   }
 }
 

@@ -4,7 +4,10 @@
   align-items: center;
   padding: 24px;
   flex-wrap: wrap;
+  position: relative; /* <-- add this */
+  z-index: 10;        /* <-- add this */
 }
+
 
 /* Logo */
 .logo {
@@ -133,7 +136,3 @@
     font-size: 0.8rem;
   }
 }
-
-
-
-

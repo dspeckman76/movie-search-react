@@ -1,62 +1,65 @@
-.home__wrapper {
-  width: 100%;
-  min-height: 100vh;
-}
+/* src/pages/Home/Home.css */
 
-.home__search-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 40px 0;
-  gap: 20px;
-}
-
-.start__exploring {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #fff;
-  gap: 12px;
-}
-
-.start__exploring h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  text-align: center;
-}
-
-.no-results {
-  color: #fff;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.results__container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+/* Container for the Home page */
+.home__container {
   padding: 20px;
-  justify-content: center;
-}
-
-.home__sort-center {
-  margin: 20px 0;
-}
-
-/* Loading state */
-.loading-state {
-  text-align: center;
-  font-size: 1.5rem;
-  color: white;
-  margin: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
 }
+
+/* SortFilter wrapper centered above movie grid */
+.sortfilter__wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Movie results grid */
+.results__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Loading / No results text */
+.results__container p,
+.home__container p {
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.home__spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.home__spinner-container .spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #0c46c2;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 /* =========================
-   RESPONSIVE LAYOUT
+   Responsive Layouts
 ========================= */
 
 /* Tablet */
@@ -64,47 +67,22 @@
   .results__container {
     gap: 16px;
   }
-
-  .movie__card {
-    flex: 1 1 calc(33.333% - 16px); /* 3 cards per row */
-  }
-
-  .home__top,
-  .home__search-center {
-    padding: 20px;
-  }
-
-  .home__sort-center {
-    width: 100%;
-  }
 }
 
 /* Mobile */
 @media (max-width: 768px) {
+  .home__container {
+    padding: 16px;
+  }
+
   .results__container {
     gap: 12px;
-    padding: 10px;
-  }
-
-  .movie__card {
-    flex: 1 1 calc(50% - 12px); /* 2 cards per row */
-    min-width: 140px;
-  }
-
-  .home__search-center {
-    margin: 20px 0;
-  }
-
-  .home__sort-center {
-    flex-direction: column;
-    gap: 10px;
   }
 }
 
 /* Small mobile */
 @media (max-width: 480px) {
-  .movie__card {
-    flex: 1 1 100%; /* 1 card per row */
-    min-width: auto;
+  .results__container {
+    gap: 10px;
   }
 }

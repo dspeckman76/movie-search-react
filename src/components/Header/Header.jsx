@@ -1,23 +1,21 @@
-// src/components/Header/Header.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logoImg from "../../assets/logo-2.png";
 
-function Header({ onHomeClick }) {
+function Header({ onReset }) {
   const navigate = useNavigate();
 
   const goHome = () => {
-    if (onHomeClick) {
-      onHomeClick(); // clear search + movies
+    if (onReset) {
+      onReset(); // reset search state ONLY
     }
-    navigate("/");
+    navigate("/"); // ALWAYS navigate
   };
 
   return (
     <header className="header__row">
-      {/* Logo + Title */}
-      <div className="logo">
+      <div className="logo" onClick={goHome} style={{ cursor: "pointer" }}>
         <img src={logoImg} alt="Logo" className="logo__img" />
         <div className="title">
           <p>
@@ -26,7 +24,6 @@ function Header({ onHomeClick }) {
         </div>
       </div>
 
-      {/* Navigation Buttons */}
       <nav className="nav-links">
         <button className="nav__btn" onClick={goHome}>
           Home
@@ -43,11 +40,3 @@ function Header({ onHomeClick }) {
 }
 
 export default Header;
-
-
-
-
-
-
-
-

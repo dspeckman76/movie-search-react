@@ -1,7 +1,6 @@
 /* =========================
    SEARCH BAR CONTAINER
 ========================= */
-
 .search__container {
   background-color: #00070f;
   height: 180px;
@@ -22,7 +21,6 @@
 /* =========================
    SEARCH BAR LAYOUT
 ========================= */
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -42,7 +40,6 @@
 /* =========================
    BACK BUTTON
 ========================= */
-
 .back-btn {
   background-color: #0c46c2;
   color: white;
@@ -65,7 +62,6 @@
 /* =========================
    SEARCH INPUT + BUTTON
 ========================= */
-
 .search-input-wrapper {
   position: relative;
   display: flex;
@@ -119,7 +115,6 @@
   background-color: #0799ed;
 }
 
-
 .search__btn {
   flex-shrink: 0;
   margin: 3px;
@@ -138,12 +133,9 @@
   background-color: #0799ed;
 }
 
-
 /* =========================
    RESPONSIVE LAYOUT
 ========================= */
-
-/* Tablet */
 @media (max-width: 1024px) {
   .search-bar {
     gap: 8px;
@@ -160,7 +152,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .search-bar {
     flex-direction: column;
@@ -179,7 +170,6 @@
   }
 }
 
-/* Small mobile */
 @media (max-width: 480px) {
   .back-btn {
     padding: 6px 14px;
@@ -197,10 +187,3 @@
     font-size: 0.85rem;
   }
 }
-
-
-
-
-
-
-

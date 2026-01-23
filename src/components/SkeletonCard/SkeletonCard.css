@@ -1,76 +1,36 @@
-/* Shared skeleton styling */
-
-/* Movie Card Skeleton */
-.movie__card.skeleton {
-  background: #2c2c2c;
+.skeleton {
+  background-color: #111;
   border-radius: 8px;
-  padding: 15px;
-  flex: 1 1 calc(25% - 20px);
-  min-width: 180px;
-  max-width: 250px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
-/* Skeleton poster and lines */
 .skeleton__poster {
   width: 100%;
-  height: 280px;
-  border-radius: 6px;
-  position: relative;
-  overflow: hidden;
-  background-color: #444;
+  height: 300px;
+  border-radius: 8px;
+  background-color: #222;
 }
 
-.skeleton__title {
+.skeleton__title,
+.skeleton__year,
+.skeleton__info {
+  height: 20px;
   width: 80%;
-  height: 16px;
+  background-color: #222;
   border-radius: 4px;
-  background-color: #444;
-}
-
-.skeleton__year {
-  width: 50%;
-  height: 14px;
-  border-radius: 4px;
-  background-color: #444;
-}
-
-/* Movie Details Skeleton */
-.skeleton__top {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-  padding: 20px;
 }
 
 .skeleton__info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 200px;
+  width: 90%;
 }
 
-.skeleton__line {
-  height: 16px;
-  border-radius: 4px;
-  background-color: #444;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shimmer effect (shared) */
 .shimmer {
   position: relative;
   overflow: hidden;
-  background-color: #444;
 }
 
 .shimmer::after {
@@ -80,11 +40,27 @@
   left: -150px;
   width: 150px;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shimmer 1.5s infinite;
+  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  animation: shimmer 1.2s infinite;
 }
 
 @keyframes shimmer {
   0% { left: -150px; }
   100% { left: 100%; }
+}
+
+.skeleton.movieDetails {
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton.movieCard {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }

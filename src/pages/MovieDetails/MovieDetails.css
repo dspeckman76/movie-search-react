@@ -1,241 +1,129 @@
-/* -------------------------------
-   Movie Details Styling
----------------------------------*/
-
-.movie__details {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  color: white;
-}
-
-/* Top container: poster left, info right */
-.movie__top {
+.movieDetails__page {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
   gap: 20px;
-  padding: 20px 40px;
-  max-width: 900px;
-  margin: 0 auto;
-  background-color: #1c1c1c;
-  border-radius: 10px;
+
+  /* Background image like Home.jsx */
+  background-image: url("../../assets/bg-1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* fallback color if image not loaded */
+  background-color: #00070f;
+
+  min-height: 100vh; /* ensure it fills the viewport */
+  width: 100%;
+}
+ 
+/* Centered Back Button */
+.movieDetails__back-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+  z-index: 5; /* above background */
   position: relative;
 }
 
+/* Top container */
+.movieDetails__top-card {
+  background-color: rgba(17, 17, 17, 0.95); /* dark gray with slight transparency to show bg */
+  width: 100%;
+  max-width: 900px;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Bookmark top-right */
+.movieDetails__bookmark {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+/* Top section: poster + info */
+.movie__top {
+  display: flex;
+  gap: 20px;
+}
+
 .movie__poster-container {
-  flex: 0 0 clamp(140px, 25%, 300px);
+  flex-shrink: 0;
 }
 
 .movie__poster {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+  width: 300px;
+  height: 450px;
   object-fit: cover;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  border-radius: 8px;
 }
 
 .movie__info-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 16px;
-  padding-left: 20px;
+  gap: 10px;
 }
 
-.movie__title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.movie__title {
+  font-size: 2rem;
+  margin-bottom: 10px;
 }
 
-/* Bottom container: full-width plot */
-.movie__bottom {
-  margin-top: 20px;
-  padding: 20px 40px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #1c1c1c;
-  border-radius: 10px;
+.movie__title span {
+  color: #0c46c2;
 }
 
-.movie__plot--title {
-  text-align: center;
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  margin-bottom: 12px;
-}
-
-.movie__plot {
-  line-height: 1.6;
-  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
-  margin-bottom: 12px;
-}
-
-.movie__awards {
-  font-style: italic;
-  color: #ccc;
-  font-size: 0.95rem;
-}
-
-/* Back Button */
-.movie__header-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.back-button,
-.back-btn {
-  background-color: #0c46c2;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 500px;
-  padding: 10px 22px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 300ms ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-button:hover,
-.back-btn:hover {
-  background-color: #0940a1;
-  border-color: yellow;
-  color: yellow;
-  transform: scale(1.1);
-}
-
-/* -------------------------------
-   Loading State + Skeleton
----------------------------------*/
-
-.loading-state {
-  text-align: center;
-  font-size: 1.5rem;
-  margin: 20px 0;
-  color: white;
-}
-
-.skeleton__top {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.skeleton__poster {
-  width: clamp(140px, 25%, 300px);
-  height: 400px;
-  border-radius: 10px;
-  background-color: #444;
-  position: relative;
-  overflow: hidden;
-}
-
-.skeleton__info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 200px;
-}
-
-.skeleton__line {
-  height: 16px;
-  border-radius: 4px;
-  background-color: #444;
+/* Bottom container */
+.movieDetails__bottom-card {
+  background-color: rgba(17, 17, 17, 0.95); /* same dark gray with transparency */
+  border-radius: 8px;
+  padding: 16px;
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  max-width: 900px;
 }
 
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150px;
-  width: 150px;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shimmer 1.5s infinite;
+/* Plot & Awards */
+.movie__plot--title {
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-@keyframes shimmer {
-  0% { left: -150px; }
-  100% { left: 100%; }
+.movie__plot,
+.movie__awards {
+  margin-bottom: 8px;
 }
 
-/* =========================
-   RESPONSIVE LAYOUT
-========================= */
-
-/* Tablet */
-@media (max-width: 1024px) {
-  .movie__top {
-    flex-direction: column;
-    padding: 20px;
-  }
-
-  .movie__poster-container {
-    flex: 1 1 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .movie__info-container {
-    padding-left: 0;
-    margin-top: 20px;
-  }
-
-  .movie__bottom {
-    padding: 20px;
-  }
+/* Loading text */
+.loading-text {
+  color: #fff;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 10px;
 }
 
-/* Mobile */
+/* Responsive */
 @media (max-width: 768px) {
   .movie__top {
-    padding: 15px;
-    gap: 12px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .movie__poster {
-    max-height: 350px;
-  }
-
-  .movie__bottom {
-    padding: 15px;
-  }
-}
-
-/* Small mobile */
-@media (max-width: 480px) {
-  .movie__poster {
-    width: 100%;
-    height: auto;
+    width: 200px;
+    height: 300px;
   }
 
   .movie__info-container {
-    gap: 10px;
-  }
-
-  .movie__plot--title {
-    font-size: 1.2rem;
-  }
-
-  .movie__plot {
-    font-size: 0.95rem;
+    align-items: center;
+    text-align: center;
   }
 }
-
-

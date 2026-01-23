@@ -1,85 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import MovieCard from "../../components/MovieCard/MovieCard";
+// src/pages/Home/Home.jsx
+import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import SortFilter from "../../components/SortFilter/SortFilter";
+import MovieCard from "../../components/MovieCard/MovieCard";
 import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
+import SortFilter from "../../components/SortFilter/SortFilter";
 import "./Home.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilm, faSpinner } from "@fortawesome/free-solid-svg-icons";
+function Home({
+  movies: initialMovies = [],
+  searchPerformed: initialSearch = false,
+  setMovies: setParentMovies,
+}) {
+  const [movies, setMovies] = useState(initialMovies);
+  const [loading, setLoading] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(initialSearch);
 
-function Home({ movies, searchPerformed, onSearch, loading }) {
-  const location = useLocation();
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const handleSearch = async (query) => {
+    setLoading(true);
+    setSearchPerformed(true);
 
-  useEffect(() => {
-    setFilteredMovies([...movies]);
-  }, [movies]);
+    try {
+      const res = await fetch(
+        `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${encodeURIComponent(
+          query
+        )}`
+      );
+      const data = await res.json();
 
-  useEffect(() => {
-    if (location.state?.resetSearch) setFilteredMovies([]);
-  }, [location.state]);
-
-  const handleSort = (sortType) => {
-    const sorted = [...filteredMovies];
-    if (sortType === "oldest") sorted.sort((a, b) => parseInt(a.Year) - parseInt(b.Year));
-    else if (sortType === "newest") sorted.sort((a, b) => parseInt(b.Year) - parseInt(a.Year));
-    else if (sortType === "rating") sorted.sort(
-      (a, b) => parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0)
-    );
-    setFilteredMovies(sorted);
+      if (data.Search) {
+        setMovies(data.Search);
+        setParentMovies?.(data.Search);
+      } else {
+        setMovies([]);
+        setParentMovies?.([]);
+      }
+    } catch (err) {
+      console.error("Search error:", err);
+      setMovies([]);
+      setParentMovies?.([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handleSort = (type) => {
+    const sorted = [...movies];
+    if (type === "rating") {
+      sorted.sort((a, b) => parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0));
+    } else if (type === "oldest") {
+      sorted.sort((a, b) => a.Year.localeCompare(b.Year));
+    } else if (type === "newest") {
+      sorted.sort((a, b) => b.Year.localeCompare(a.Year));
+    }
+    setMovies(sorted);
+    setParentMovies?.(sorted);
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("search");
+    if (query && !searchPerformed) handleSearch(query);
+  }, []);
+
   return (
-    <div className="home__wrapper">
-      <div className="home__search-center">
-        <SearchBar onSearch={onSearch} />
+    <div className="home__container">
+      <SearchBar onSearch={handleSearch} />
+      <SortFilter onSort={handleSort} />
 
-        {!loading && !searchPerformed && (
-          <div className="start__exploring">
-            <FontAwesomeIcon icon={faFilm} size="6x" />
-            <h2>Start Exploring!</h2>
-          </div>
-        )}
+      {loading && <p style={{ textAlign: "center", marginTop: "20px" }}>Loading...</p>}
 
-        {loading && (
-          <div className="loading-state">
-            <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-            <p>Loading...</p>
-          </div>
-        )}
-
-        {!loading && searchPerformed && filteredMovies.length === 0 && (
-          <p className="no-results">No movies found. Try searching!</p>
-        )}
-
-        {!loading && filteredMovies.length > 0 && (
-          <div className="home__sort-center">
-            <SortFilter onSort={handleSort} />
-          </div>
-        )}
-      </div>
-
-      <div className="results__container">
+      <div className={`results__container ${!loading ? "fade-in" : ""}`}>
         {loading
-          ? Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
-          : filteredMovies.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)}
+          ? Array.from({ length: 8 }).map((_, idx) => (
+              <SkeletonCard key={idx} type="movieCard" />
+            ))
+          : movies.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)}
       </div>
+
+      {!loading && searchPerformed && movies.length === 0 && (
+        <p style={{ textAlign: "center", marginTop: "20px" }}>No results found.</p>
+      )}
     </div>
   );
 }
 
 export default Home;
-
-
-
-
-
-
-
-
-
-
-
-

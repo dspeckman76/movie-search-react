@@ -1,13 +1,16 @@
+// src/components/BackButton/BackButton.jsx
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./BackButton.css";
 
-function BackButton({ fallback = "/" }) {
+function BackButton({ fallback = "/", className }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBack = () => {
-    // If browser history exists, go back
-    if (window.history.length > 1) {
+    if (location.state?.fromSearch) {
+      navigate(location.state.fromSearch);
+    } else if (window.history.length > 1) {
       navigate(-1);
     } else {
       navigate(fallback);
@@ -15,11 +18,13 @@ function BackButton({ fallback = "/" }) {
   };
 
   return (
-    <button className="back-button" onClick={handleBack}>
+    <button
+      className={className || "back-button"}
+      onClick={handleBack}
+    >
       ← Back
     </button>
   );
 }
 
 export default BackButton;
-

@@ -1,127 +1,116 @@
-/* Wrapper */
+/* src/components/SortFilter/SortFilter.css */
+
+/* Container */
 .sortfilter {
-  width: 220px;
-  margin: 20px auto;
-  overflow: hidden;
-
-  background-color: #0c46c2;
-  border: 2px solid #fff;
-  border-radius: 500px;
-
-  transition: all 0.35s ease;
-}
-
-/* Expanded state */
-.sortfilter.open {
-  border-radius: 14px;
+  position: relative;
+  display: inline-block;
+  font-family: inherit;
+  text-align: center;
 }
 
 /* Trigger button */
 .sortfilter__trigger {
-  width: 100%;
-  background: none;
-  border: none;
+  background-color: #0c46c2;
   color: #fff;
-  padding: 12px 18px;
-
-  font-size: 1rem;
+  border: 2px solid #fff;
+  border-radius: 500px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
   font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   cursor: pointer;
+  transition: all 300ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Arrow */
+.sortfilter__trigger:hover {
+  background-color: #0940a1;
+  border-color: yellow;
+  color: yellow;
+  transform: scale(1.05);
+}
+
+/* Dropdown arrow */
 .sortfilter__arrow {
-  font-size: 0.8rem;
+  margin-left: 8px;
+  font-size: 0.75rem;
 }
 
-/* Collapsible content */
+/* Dropdown content */
 .sortfilter__content {
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.35s ease;
-
-  display: flex;
-  flex-direction: column;
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #1c1c1c;
+  border: 1px solid #0c46c2;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 200px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
 }
 
-/* Open animation */
 .sortfilter.open .sortfilter__content {
-  max-height: 200px;
-  opacity: 1;
+  display: flex;
 }
 
-/* Option buttons */
+/* Sort options buttons */
 .sortfilter__content button {
   background: none;
   border: none;
-  padding: 12px 18px;
   color: #fff;
+  padding: 10px 16px;
   text-align: left;
-  font-size: 0.95rem;
-
-  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 200ms ease;
 }
 
 .sortfilter__content button:hover {
-  background-color: #0940a1;
+  background-color: #0c46c2;
   color: yellow;
 }
 
-
 /* =========================
-   RESPONSIVE LAYOUT
+   Responsive Layouts
 ========================= */
 
 /* Tablet */
 @media (max-width: 1024px) {
-  .sortfilter {
-    width: 180px;
+  .sortfilter__content {
+    min-width: 180px;
   }
 
-  .sortfilter__content button {
-    padding: 10px 14px;
+  .sortfilter__trigger {
+    padding: 8px 18px;
     font-size: 0.9rem;
   }
 }
 
 /* Mobile */
 @media (max-width: 768px) {
-  .sortfilter {
-    width: 140px;
-    margin: 10px auto;
+  .sortfilter__content {
+    min-width: 160px;
   }
 
   .sortfilter__trigger {
-    font-size: 0.9rem;
-    padding: 10px 14px;
-  }
-
-  .sortfilter__content button {
+    padding: 6px 16px;
     font-size: 0.85rem;
-    padding: 8px 12px;
   }
 }
 
 /* Small mobile */
 @media (max-width: 480px) {
-  .sortfilter {
-    width: 120px;
+  .sortfilter__content {
+    min-width: 140px;
   }
 
   .sortfilter__trigger {
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
-
-  .sortfilter__content button {
+    padding: 5px 12px;
     font-size: 0.8rem;
-    padding: 6px 10px;
   }
 }
-

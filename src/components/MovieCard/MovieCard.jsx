@@ -1,65 +1,38 @@
-import React, { useEffect, useState, useContext } from "react";
+// src/components/MovieCard/MovieCard.jsx
+import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./MovieCard.css";
 import placeholder from "../../assets/blank-poster.png";
 import Bookmark from "../Bookmark/Bookmark";
 import { FavoritesContext } from "../../App";
+import SkeletonCard from "../SkeletonCard/SkeletonCard";
 
-function MovieCard({ movie }) {
-  const [posterUrl, setPosterUrl] = useState(placeholder);
+function MovieCard({ movie, loading }) {
+  const [loaded, setLoaded] = useState(false);
   const location = useLocation();
+  const { isFavorite } = useContext(FavoritesContext);
 
-  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+  if (loading || !movie) return <SkeletonCard type="movieCard" />;
 
-  // Preserve search query in URL
   const searchParams = new URLSearchParams(location.search);
   const currentQuery = searchParams.get("search") || "";
+  const fromSearch = location.pathname + location.search;
 
-  // Fetch poster from TMDb
-  useEffect(() => {
-    const fetchTMDbPoster = async () => {
-      try {
-        const TMDB_KEY = process.env.REACT_APP_TMDB_API_KEY;
-        const res = await fetch(
-          `https://api.themoviedb.org/3/find/${movie.imdbID}?api_key=${TMDB_KEY}&external_source=imdb_id`
-        );
-        const data = await res.json();
-
-        if (
-          data.movie_results &&
-          data.movie_results.length > 0 &&
-          data.movie_results[0].poster_path
-        ) {
-          setPosterUrl(
-            `https://image.tmdb.org/t/p/w500${data.movie_results[0].poster_path}`
-          );
-        }
-      } catch (err) {
-        console.error("Error fetching TMDb poster:", err);
-      }
-    };
-
-    fetchTMDbPoster();
-  }, [movie.imdbID]);
+  const poster = movie.Poster !== "N/A" ? movie.Poster : placeholder;
 
   return (
-    <div className="movie__card">
-      {/* Bookmark */}
-      <Bookmark
-        isFavorited={isFavorite(movie.imdbID)}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleFavorite(movie);
-        }}
-      />
-      
+    <div className="movie__card fade-in">
+      <Bookmark movie={movie} />
       <Link
-        to={`/movie/${movie.imdbID}?search=${encodeURIComponent(
-          currentQuery
-        )}`}
+        to={`/movie/${movie.imdbID}?search=${encodeURIComponent(currentQuery)}`}
+        state={{ fromSearch }}
       >
-        <img src={posterUrl || placeholder} alt={movie.Title} />
+        <img
+          src={poster}
+          alt={movie.Title}
+          onLoad={() => setLoaded(true)}
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease-in" }}
+        />
         <h3>{movie.Title}</h3>
         <p>{movie.Year}</p>
       </Link>
@@ -68,10 +41,3 @@ function MovieCard({ movie }) {
 }
 
 export default MovieCard;
-
-
-
-
-
-
-
