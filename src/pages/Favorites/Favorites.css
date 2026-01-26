@@ -1,52 +1,28 @@
 /* src/pages/Favorites/Favorites.css */
 
-/* === Page container (MATCHES Home) === */
-.favorites__container {
+/* Favorites page container */
+.favorites {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 🔥 THIS centers the grid */
-}
-
-/* === Toolbar === */
-.favorites__toolbar {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  min-height: 100vh;
+  width: 100%;
 }
 
-/* Back button styling */
-.back-button-favorites {
-  background-color: #0c46c2;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 500px;
-  padding: 8px 18px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 300ms ease;
-}
-
-.back-button-favorites:hover {
-  background-color: #0940a1;
-  border-color: yellow;
-  color: yellow;
-  transform: scale(1.05);
-}
-
-/* === Movie grid (IDENTICAL to Home) === */
-.results__container {
+/* Favorites movie grid */
+.favorites__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 1200px;
+  justify-items: center;
+  padding: 0 10px;
 }
 
-/* Empty state */
-.favorites__empty {
+/* Empty / loading message */
+.favorites__message {
   text-align: center;
   width: 100%;
   margin-top: 40px;
@@ -54,21 +30,25 @@
   color: #fff;
 }
 
-/* === Responsive === */
+/* Responsive layouts */
+@media (max-width: 1024px) {
+  .favorites__grid {
+    gap: 16px;
+  }
+}
+
 @media (max-width: 768px) {
-  .favorites__container {
+  .favorites {
     padding: 16px;
   }
 
-  .results__container {
-    gap: 12px;
+  .favorites__grid {
+    gap: 14px;
   }
 }
 
 @media (max-width: 480px) {
-  .results__container {
-    gap: 10px;
+  .favorites__grid {
+    gap: 12px;
   }
 }
-
-

@@ -1,57 +1,62 @@
 // src/App.js
-import React, { useState, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
+import React, { createContext } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Favorites from "./pages/Favorites/Favorites";
 import MovieDetails from "./pages/MovieDetails/MovieDetails";
-
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import { MovieProvider, useMovies } from "./context/MovieContext";
 import { ToastProvider } from "./components/Toast/ToastContainer";
-
 import "./App.css";
 
-// Favorites context
+/**
+ * FavoritesContext
+ * Provides favorite movies state and helper functions to components like Bookmark.
+ */
 export const FavoritesContext = createContext();
 
-function App() {
-  const [favorites, setFavorites] = useState([]);
+/**
+ * AppContent
+ * Handles routing and provides FavoritesContext based on MovieContext state.
+ */
+function AppContent() {
+  const { favorites, toggleFavorite, resetHome } = useMovies();
 
-  const isFavorite = (id) => favorites.some((movie) => movie.imdbID === id);
-
-  const toggleFavorite = (movie) => {
-    setFavorites((prev) =>
-      prev.some((m) => m.imdbID === movie.imdbID)
-        ? prev.filter((m) => m.imdbID !== movie.imdbID)
-        : [...prev, movie]
-    );
-  };
-
-  // Reset state for Home button
-  const handleReset = () => {
-    localStorage.removeItem("lastSearchQuery");
-    window.location.href = "/";
-  };
+  // Helper to check if a movie is favorited
+  const isFavorite = (imdbID) => favorites.some((m) => m.imdbID === imdbID);
 
   return (
-    <FavoritesContext.Provider value={{ favorites, isFavorite, toggleFavorite }}>
+    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite }}>
+      <div className="app__wrapper">
+        <Header onReset={resetHome} />
+        <main className="main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/movie/:imdbID" element={<MovieDetails />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </FavoritesContext.Provider>
+  );
+}
+
+/**
+ * App
+ * Wraps the entire application with MovieProvider, ToastProvider, and Router.
+ */
+function App() {
+  return (
+    <MovieProvider>
       <ToastProvider>
         <Router>
-          <div className="app__wrapper">
-            <Header onReset={handleReset} />
-            <main className="main">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/movie/:id" element={<MovieDetails />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
+          <AppContent />
         </Router>
       </ToastProvider>
-    </FavoritesContext.Provider>
+    </MovieProvider>
   );
 }
 

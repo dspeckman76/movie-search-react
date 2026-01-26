@@ -1,45 +1,47 @@
-.header__row {
+/* src/components/Header/Header.css */
+
+/* Header block */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 24px;
   flex-wrap: wrap;
-  position: relative; /* <-- add this */
-  z-index: 10;        /* <-- add this */
+  position: relative;
+  z-index: 10;
 }
 
-
 /* Logo */
-.logo {
+.header__logo {
   display: flex;
   align-items: center;
 }
 
-.logo__img {
+.header__logo-img {
   width: 100px;
   height: 100px;
   filter: invert(100%);
 }
 
-.title p {
+.header__title p {
   font-weight: bold;
   font-size: 2rem;
   margin-left: 12px;
   padding-bottom: 2px;
 }
 
-.title p span {
+.header__title p span {
   color: #0c46c2;
 }
 
 /* Navigation */
-.nav-links {
+.header__nav {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.nav__btn {
+.header__btn {
   background-color: #0c46c2;
   color: #fff;
   border: 2px solid #fff;
@@ -54,14 +56,14 @@
   justify-content: center;
 }
 
-.nav__btn:hover {
+.header__btn:hover {
   background-color: #0940a1;
   border-color: yellow;
   color: yellow;
   transform: scale(1.1);
 }
 
-.nav__btn:active {
+.header__btn:active {
   background: #42e7ef;
   color: #fff;
 }
@@ -72,20 +74,20 @@
 
 /* Tablet */
 @media (max-width: 1024px) {
-  .header__row {
+  .header {
     padding: 16px 20px;
   }
 
-  .logo__img {
+  .header__logo-img {
     width: 80px;
     height: 80px;
   }
 
-  .title p {
+  .header__title p {
     font-size: 1.6rem;
   }
 
-  .nav__btn {
+  .header__btn {
     padding: 8px 16px;
     font-size: 0.9rem;
   }
@@ -93,28 +95,28 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-  .header__row {
+  .header {
     flex-direction: column;
     gap: 12px;
   }
 
-  .nav-links {
+  .header__nav {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
   }
 
-  .logo__img {
+  .header__logo-img {
     width: 70px;
     height: 70px;
   }
 
-  .title p {
+  .header__title p {
     font-size: 1.4rem;
   }
 
-  .nav__btn {
+  .header__btn {
     padding: 6px 14px;
     font-size: 0.85rem;
   }
@@ -122,16 +124,16 @@
 
 /* Small mobile */
 @media (max-width: 480px) {
-  .logo__img {
+  .header__logo-img {
     width: 60px;
     height: 60px;
   }
 
-  .title p {
+  .header__title p {
     font-size: 1.2rem;
   }
 
-  .nav__btn {
+  .header__btn {
     padding: 5px 12px;
     font-size: 0.8rem;
   }

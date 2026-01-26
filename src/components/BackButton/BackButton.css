@@ -1,5 +1,7 @@
-/* Reusable BackButton styling for MovieDetails and Favorites */
-.back-button-favorites {
+/* src/components/BackButton/BackButton.css */
+
+/* Default BackButton styling */
+.back-button {
   background-color: #0c46c2;
   color: #fff;
   border: 2px solid #fff;
@@ -14,10 +16,9 @@
   justify-content: center;
 }
 
-.back-button-favorites:hover {
+.back-button:hover {
   background-color: #0940a1;
   border-color: yellow;
   color: yellow;
   transform: scale(1.1);
 }
-

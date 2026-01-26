@@ -1,44 +1,45 @@
 // src/pages/Favorites/Favorites.jsx
-import React, { useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import MovieCard from "../../components/MovieCard/MovieCard";
-import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
-import BackButton from "../../components/BackButton/BackButton";
-import { FavoritesContext } from "../../App";
+
+import React from "react";
+import { useMovies } from "../../context/MovieContext";
 import "./Favorites.css";
 
+// UI components
+import MovieCard from "../../components/MovieCard/MovieCard";
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
+
+// Utility for resolving poster fallbacks
+import { resolvePoster } from "../../utils/resolvePoster.js";
+
+/**
+ * Favorites page
+ * - Displays a grid of favorited movies from MovieContext
+ * - Shows loading skeletons when data is loading and favorites are empty
+ * - Shows an empty-state message when no favorites exist
+ */
 function Favorites() {
-  const { favorites } = useContext(FavoritesContext);
-  const location = useLocation();
-  const fromSearch = location.state?.fromSearch || "/";
-
-  const [loading, setLoading] = useState(true);
-
-  // Match Home shimmer timing
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, [favorites]);
+  /**
+   * favorites → array of favorited movies stored in MovieContext
+   * loading   → global loading flag shared across the app
+   */
+  const { favorites, loading } = useMovies();
 
   return (
-    <div className="favorites__container">
-      {/* Centered Back Button */}
-      <div className="favorites__toolbar">
-        <BackButton fallback={fromSearch} className="back-button-favorites" />
-      </div>
-
-      {/* Centered grid — SAME as Home */}
-      <div className={`results__container ${!loading ? "fade-in" : ""}`}>
-        {loading ? (
-          Array.from({ length: 8 }).map((_, idx) => (
-            <SkeletonCard key={idx} type="movieCard" />
-          ))
+    <div className="favorites">
+      <div className="favorites__grid">
+        {loading && favorites.length === 0 ? (
+          [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
         ) : favorites.length === 0 ? (
-          <p className="favorites__empty">No favorites yet.</p>
+          <p className="favorites__message">No favorites added yet.</p>
         ) : (
           favorites.map((movie) => (
-            <MovieCard key={movie.imdbID} movie={movie} />
+            <MovieCard
+              key={movie.imdbID}
+              movie={{
+                ...movie,
+                Poster: resolvePoster(movie),
+              }}
+            />
           ))
         )}
       </div>

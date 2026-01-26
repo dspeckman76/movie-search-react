@@ -1,8 +1,16 @@
+// src/components/Header/Header.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logoImg from "../../assets/logo-2.png";
 
+/**
+ * Header
+ * - Displays the site logo and main navigation buttons
+ * - Clicking the logo or Home button resets search state and navigates home
+ * - Favorites button navigates to the favorites page
+ */
 function Header({ onReset }) {
   const navigate = useNavigate();
 
@@ -14,24 +22,21 @@ function Header({ onReset }) {
   };
 
   return (
-    <header className="header__row">
-      <div className="logo" onClick={goHome} style={{ cursor: "pointer" }}>
-        <img src={logoImg} alt="Logo" className="logo__img" />
-        <div className="title">
+    <header className="header">
+      <div className="header__logo" onClick={goHome} style={{ cursor: "pointer" }}>
+        <img src={logoImg} alt="Logo" className="header__logo-img" />
+        <div className="header__title">
           <p>
             Movie <span>Search</span>
           </p>
         </div>
       </div>
 
-      <nav className="nav-links">
-        <button className="nav__btn" onClick={goHome}>
+      <nav className="header__nav">
+        <button className="header__btn" onClick={goHome}>
           Home
         </button>
-        <button
-          className="nav__btn"
-          onClick={() => navigate("/favorites")}
-        >
+        <button className="header__btn" onClick={() => navigate("/favorites")}>
           Favorites
         </button>
       </nav>

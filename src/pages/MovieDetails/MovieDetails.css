@@ -1,36 +1,50 @@
-.movieDetails__page {
+/* src/pages/MovieDetails/MovieDetails.css */
+
+/* Page container */
+.movie-details {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   gap: 20px;
 
-  /* Background image like Home.jsx */
   background-image: url("../../assets/bg-1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  /* fallback color if image not loaded */
   background-color: #00070f;
 
-  min-height: 100vh; /* ensure it fills the viewport */
+  min-height: 100vh;
   width: 100%;
 }
- 
+
 /* Centered Back Button */
-.movieDetails__back-wrapper {
+.movie-details__back-wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
   margin-bottom: 20px;
-  z-index: 5; /* above background */
+  z-index: 5;
   position: relative;
 }
 
+.movie-details__back-button {
+  background-color: #0c46c2;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.movie-details__back-button:hover {
+  background-color: #0831a1;
+}
+
 /* Top container */
-.movieDetails__top-card {
-  background-color: rgba(17, 17, 17, 0.95); /* dark gray with slight transparency to show bg */
+.movie-details__top-card {
+  background-color: rgba(17, 17, 17, 0.95);
   width: 100%;
   max-width: 900px;
   border-radius: 8px;
@@ -42,7 +56,7 @@
 }
 
 /* Bookmark top-right */
-.movieDetails__bookmark {
+.movie-details__bookmark {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -50,60 +64,45 @@
 }
 
 /* Top section: poster + info */
-.movie__top {
+.movie-details__top {
   display: flex;
   gap: 20px;
 }
 
-.movie__poster-container {
+.movie-details__poster-container {
   flex-shrink: 0;
 }
 
-.movie__poster {
+.movie-details__poster {
   width: 300px;
   height: 450px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.movie__info-container {
+.movie-details__info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.movie__title {
+.movie-details__title {
   font-size: 2rem;
   margin-bottom: 10px;
 }
 
-.movie__title span {
-  color: #0c46c2;
-}
-
-/* Bottom container */
-.movieDetails__bottom-card {
-  background-color: rgba(17, 17, 17, 0.95); /* same dark gray with transparency */
-  border-radius: 8px;
-  padding: 16px;
-  width: 100%;
-  max-width: 900px;
-}
-
-/* Plot & Awards */
-.movie__plot--title {
+.movie-details__plot-title {
   font-weight: bold;
   margin-bottom: 8px;
 }
 
-.movie__plot,
-.movie__awards {
+.movie-details__plot,
+.movie-details__awards {
   margin-bottom: 8px;
 }
 
-/* Loading text */
-.loading-text {
+.movie-details__loading {
   color: #fff;
   text-align: center;
   font-size: 1.2rem;
@@ -112,18 +111,19 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .movie__top {
+  .movie-details__top {
     flex-direction: column;
     align-items: center;
   }
 
-  .movie__poster {
+  .movie-details__poster {
     width: 200px;
     height: 300px;
   }
 
-  .movie__info-container {
+  .movie-details__info {
     align-items: center;
     text-align: center;
   }
 }
+

@@ -1,24 +1,50 @@
 // src/components/SkeletonCard/SkeletonCard.jsx
+
 import React from "react";
 import "./SkeletonCard.css";
 
-function SkeletonCard({ type = "movieCard" }) {
+/**
+ * SkeletonCard
+ * - Displays loading placeholders while movie data is being fetched
+ * - Supports two layouts:
+ *   1) Movie card skeleton (grid view)
+ *   2) Movie details skeleton (details page)
+ */
+function SkeletonCard({ type }) {
+  if (type === "movieDetails") {
+    return (
+      <div className="movie-details-skeleton">
+        <div className="movie-details-skeleton__back">
+          <div className="skeleton skeleton--back shimmer" />
+        </div>
+
+        <div className="movie-details-skeleton__top">
+          <div className="movie-details-skeleton__poster">
+            <div className="skeleton skeleton--poster shimmer" />
+          </div>
+
+          <div className="movie-details-skeleton__info">
+            <div className="skeleton skeleton--title shimmer" />
+            <div className="skeleton skeleton--text shimmer" />
+            <div className="skeleton skeleton--text shimmer" />
+            <div className="skeleton skeleton--text shimmer" />
+            <div className="skeleton skeleton--text shimmer" />
+          </div>
+        </div>
+
+        <div className="movie-details-skeleton__bottom">
+          <div className="skeleton skeleton--plot shimmer" />
+        </div>
+      </div>
+    );
+  }
+
+  // Default: movie card skeleton (grid)
   return (
-    <div className={`skeleton ${type}`}>
-      <div className="skeleton__poster shimmer" />
-      {type === "movieCard" && (
-        <>
-          <div className="skeleton__title shimmer" />
-          <div className="skeleton__year shimmer" />
-        </>
-      )}
-      {type === "movieDetails" && (
-        <>
-          <div className="skeleton__info shimmer" />
-          <div className="skeleton__info shimmer" />
-          <div className="skeleton__info shimmer" />
-        </>
-      )}
+    <div className="movie-card-skeleton fade-in">
+      <div className="skeleton skeleton--poster shimmer" />
+      <div className="skeleton skeleton--title shimmer" />
+      <div className="skeleton skeleton--year shimmer" />
     </div>
   );
 }

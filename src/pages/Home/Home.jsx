@@ -1,85 +1,99 @@
 // src/pages/Home/Home.jsx
-import React, { useState, useEffect } from "react";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import MovieCard from "../../components/MovieCard/MovieCard";
-import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
-import SortFilter from "../../components/SortFilter/SortFilter";
+
+import React, { useState, useMemo } from "react";
+import { useMovies } from "../../context/MovieContext";
 import "./Home.css";
 
-function Home({
-  movies: initialMovies = [],
-  searchPerformed: initialSearch = false,
-  setMovies: setParentMovies,
-}) {
-  const [movies, setMovies] = useState(initialMovies);
-  const [loading, setLoading] = useState(false);
-  const [searchPerformed, setSearchPerformed] = useState(initialSearch);
+// UI components
+import SearchBar from "../../components/SearchBar/SearchBar";
+import MovieCard from "../../components/MovieCard/MovieCard";
+import SortFilter from "../../components/SortFilter/SortFilter";
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
 
-  const handleSearch = async (query) => {
-    setLoading(true);
-    setSearchPerformed(true);
+// Utility for resolving poster fallbacks
+import { resolvePoster } from "../../utils/resolvePoster.js";
 
-    try {
-      const res = await fetch(
-        `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${encodeURIComponent(
-          query
-        )}`
+/**
+ * Home page
+ * - Provides movie search functionality via SearchBar
+ * - Displays sortable movie results
+ * - Handles loading and empty states
+ */
+function Home() {
+  /**
+   * movies  → array of movie search results from MovieContext
+   * loading → global loading flag controlled by MovieContext
+   * search  → function that triggers a new OMDb search
+   */
+  const { movies, loading, search } = useMovies();
+
+  /**
+   * sortType controls how movies are sorted in the UI
+   * Possible values:
+   *  - null (no sorting)
+   *  - "oldest"
+   *  - "newest"
+   *  - "rating"
+   */
+  const [sortType, setSortType] = useState(null);
+
+  /**
+   * Memoized sorted movie list
+   *
+   * WHY useMemo?
+   * - Sorting mutates arrays → we always clone first
+   * - Prevents unnecessary re-sorting on every render
+   * - Critical: keeps routing/navigation stable after sorting
+   *
+   * IMPORTANT:
+   * - This does NOT modify the original movies array
+   * - This avoids breaking MovieCard → MovieDetails navigation
+   */
+  const sortedMovies = useMemo(() => {
+    const list = [...movies];
+
+    if (sortType === "oldest") {
+      list.sort((a, b) => parseInt(a.Year) - parseInt(b.Year));
+    }
+
+    if (sortType === "newest") {
+      list.sort((a, b) => parseInt(b.Year) - parseInt(a.Year));
+    }
+
+    if (sortType === "rating") {
+      list.sort(
+        (a, b) =>
+          (parseFloat(b.imdbRating) || 0) -
+          (parseFloat(a.imdbRating) || 0)
       );
-      const data = await res.json();
-
-      if (data.Search) {
-        setMovies(data.Search);
-        setParentMovies?.(data.Search);
-      } else {
-        setMovies([]);
-        setParentMovies?.([]);
-      }
-    } catch (err) {
-      console.error("Search error:", err);
-      setMovies([]);
-      setParentMovies?.([]);
-    } finally {
-      setLoading(false);
     }
-  };
 
-  const handleSort = (type) => {
-    const sorted = [...movies];
-    if (type === "rating") {
-      sorted.sort((a, b) => parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0));
-    } else if (type === "oldest") {
-      sorted.sort((a, b) => a.Year.localeCompare(b.Year));
-    } else if (type === "newest") {
-      sorted.sort((a, b) => b.Year.localeCompare(a.Year));
-    }
-    setMovies(sorted);
-    setParentMovies?.(sorted);
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("search");
-    if (query && !searchPerformed) handleSearch(query);
-  }, []);
+    return list;
+  }, [movies, sortType]);
 
   return (
-    <div className="home__container">
-      <SearchBar onSearch={handleSearch} />
-      <SortFilter onSort={handleSort} />
+    <div className="home">
+      <SearchBar onSearch={search} />
 
-      {loading && <p style={{ textAlign: "center", marginTop: "20px" }}>Loading...</p>}
-
-      <div className={`results__container ${!loading ? "fade-in" : ""}`}>
-        {loading
-          ? Array.from({ length: 8 }).map((_, idx) => (
-              <SkeletonCard key={idx} type="movieCard" />
-            ))
-          : movies.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)}
-      </div>
-
-      {!loading && searchPerformed && movies.length === 0 && (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>No results found.</p>
+      {movies.length > 0 && (
+        <div className="home__sort">
+          <SortFilter onSort={setSortType} />
+        </div>
       )}
+
+      <div className="home__grid">
+        {loading && movies.length === 0
+          ? [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
+          : sortedMovies.map((movie) => (
+              <MovieCard
+                key={movie.imdbID}
+                movie={{
+                  ...movie,
+                  Poster: resolvePoster(movie),
+                }}
+              />
+            ))}
+      </div>
     </div>
   );
 }

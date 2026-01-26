@@ -1,8 +1,15 @@
 // src/components/BackButton/BackButton.jsx
+
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./BackButton.css";
 
+/**
+ * BackButton
+ * - Navigates back to the previous page or a fallback route
+ * - Uses `location.state.fromSearch` if available
+ * - Accepts optional `className` for custom styling
+ */
 function BackButton({ fallback = "/", className }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,3 +35,4 @@ function BackButton({ fallback = "/", className }) {
 }
 
 export default BackButton;
+

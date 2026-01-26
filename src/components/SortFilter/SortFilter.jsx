@@ -1,11 +1,18 @@
+// src/components/SortFilter/SortFilter.jsx
+
 import React, { useState, useRef, useEffect } from "react";
 import "./SortFilter.css";
 
+/**
+ * SortFilter
+ * - Displays a dropdown menu for sorting movie results
+ * - Allows sorting by year (oldest/newest) or IMDb rating
+ * - Closes automatically when clicking outside the component
+ */
 function SortFilter({ onSort }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -19,7 +26,7 @@ function SortFilter({ onSort }) {
 
   const handleSelect = (type) => {
     onSort(type);
-    setOpen(false); // collapse after selection
+    setOpen(false);
   };
 
   return (
@@ -33,9 +40,15 @@ function SortFilter({ onSort }) {
       </button>
 
       <div className="sortfilter__content">
-        <button onClick={() => handleSelect("oldest")}>Oldest to Newest</button>
-        <button onClick={() => handleSelect("newest")}>Newest to Oldest</button>
-        <button onClick={() => handleSelect("rating")}>Rating (Highest First)</button>
+        <button onClick={() => handleSelect("oldest")}>
+          Oldest to Newest
+        </button>
+        <button onClick={() => handleSelect("newest")}>
+          Newest to Oldest
+        </button>
+        <button onClick={() => handleSelect("rating")}>
+          Rating (Highest First)
+        </button>
       </div>
     </div>
   );

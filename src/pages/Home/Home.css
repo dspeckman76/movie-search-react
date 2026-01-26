@@ -1,33 +1,35 @@
 /* src/pages/Home/Home.css */
 
-/* Container for the Home page */
-.home__container {
+/* Home page container */
+.home {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  width: 100%;
 }
 
-/* SortFilter wrapper centered above movie grid */
-.sortfilter__wrapper {
+/* Sort filter wrapper */
+.home__sort {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
-/* Movie results grid */
-.results__container {
+/* Movie cards grid */
+.home__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 1200px;
+  justify-items: center;
 }
 
-/* Loading / No results text */
-.results__container p,
-.home__container p {
+/* Empty / loading text */
+.home__grid p,
+.home p {
   text-align: center;
   width: 100%;
   margin-top: 40px;
@@ -35,7 +37,8 @@
   color: #fff;
 }
 
-.home__spinner-container {
+/* Spinner container (optional) */
+.home__spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +46,7 @@
   margin: 20px 0;
 }
 
-.home__spinner-container .spinner {
+.home__spinner .spinner {
   border: 6px solid #f3f3f3;
   border-top: 6px solid #0c46c2;
   border-radius: 50%;
@@ -53,36 +56,41 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-
-/* =========================
-   Responsive Layouts
-========================= */
-
-/* Tablet */
+/* Responsive layouts */
 @media (max-width: 1024px) {
-  .results__container {
+  .home__grid {
     gap: 16px;
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
-  .home__container {
+  .home {
     padding: 16px;
   }
 
-  .results__container {
+  .home__grid {
     gap: 12px;
+  }
+
+  .home__sort {
+    margin: 16px 0;
   }
 }
 
-/* Small mobile */
 @media (max-width: 480px) {
-  .results__container {
+  .home__grid {
     gap: 10px;
+  }
+
+  .home__sort {
+    margin: 12px 0;
   }
 }

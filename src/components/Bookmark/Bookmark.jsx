@@ -1,9 +1,16 @@
 // src/components/Bookmark/Bookmark.jsx
+
 import React, { useContext } from "react";
 import "./Bookmark.css";
 import { FavoritesContext } from "../../App";
 import { useToast } from "../Toast/ToastContainer";
 
+/**
+ * Bookmark
+ * - Displays a bookmark icon for a movie
+ * - Allows adding/removing the movie from favorites
+ * - Uses context to track favorites and toast notifications
+ */
 function Bookmark({ movie }) {
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
   const { addToast } = useToast();
@@ -26,7 +33,7 @@ function Bookmark({ movie }) {
 
   return (
     <div
-      className={`movie__bookmark ${favorited ? "active" : ""}`}
+      className={`movie-bookmark ${favorited ? "movie-bookmark--active" : ""}`}
       onClick={handleClick}
       title={favorited ? "Remove from Favorites" : "Add to Favorites"}
     >

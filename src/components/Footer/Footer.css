@@ -1,3 +1,6 @@
+/* src/components/Footer/Footer.css */
+
+/* Footer block */
 .footer {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.85);
@@ -6,6 +9,3 @@
   padding: 20px 0;
   font-size: 14px;
 }
-
-
-

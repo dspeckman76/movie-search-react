@@ -1,103 +1,120 @@
 // src/pages/MovieDetails/MovieDetails.jsx
-import React, { useEffect, useState, useContext } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import { FavoritesContext } from "../../App";
-import BackButton from "../../components/BackButton/BackButton";
+
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Bookmark from "../../components/Bookmark/Bookmark";
-import SkeletonCard from "../../components/SkeletonCard/SkeletonCard";
-import { useToast } from "../../components/Toast/ToastContainer";
+import { resolvePoster } from "../../utils/resolvePoster.js";
 import "./MovieDetails.css";
 
+/**
+ * MovieDetails page
+ * - Displays detailed information for a single movie
+ * - Handles fetching from OMDb if movie data is not passed via state
+ * - Includes bookmark button and back navigation
+ */
 function MovieDetails() {
-  const { id } = useParams();
-  const location = useLocation();
-  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
-  const { addToast } = useToast();
+  const navigate = useNavigate(); // Router navigation
+  const location = useLocation(); // Current location (for back button)
+  const { imdbID } = useParams(); // Movie IMDb ID from URL
 
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const fromSearch = location.state?.fromSearch || "/";
+  // Movie state: either from location.state or fetched from API
+  const [movie, setMovie] = useState(location.state?.movie || null);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      setLoading(true);
-      const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
+    // If movie data is already passed via state, no need to fetch
+    if (movie) return;
 
+    let mounted = true;
+
+    const fetchMovie = async () => {
       try {
         const res = await fetch(
-          `https://www.omdbapi.com/?i=${id}&apikey=${OMDB_KEY}`
+          `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&i=${imdbID}&plot=full`
         );
         const data = await res.json();
-        setMovie(data);
+
+        if (!mounted) return;
+
+        // Resolve poster fallback: TMDb → OMDb → local blank
+        const poster = resolvePoster({
+          tmdbPoster: data.tmdbPoster,
+          Poster: data.Poster && data.Poster !== "N/A" ? data.Poster : null,
+        });
+
+        setMovie({ ...data, Poster: poster });
       } catch (err) {
         console.error(err);
       }
-
-      setTimeout(() => setLoading(false), 500);
     };
 
     fetchMovie();
-  }, [id]);
 
-  const handleBookmark = () => {
-    if (!movie) return;
-    const currentlyFavorited = isFavorite(movie.imdbID);
-    toggleFavorite(movie);
+    return () => {
+      mounted = false;
+    };
+  }, [imdbID, movie]);
 
-    addToast(
-      currentlyFavorited ? "Removed from favorites" : "Added to favorites",
-      currentlyFavorited ? "info" : "success"
-    );
-  };
+  if (!movie)
+    return <p className="movie-details__loading">Movie not found.</p>;
+
+  // Determine the back navigation target
+  const fromSearch = location.state?.fromSearch || "/";
 
   return (
-    <div className="movieDetails__page">
-      <div className="movieDetails__back-wrapper">
-        <BackButton fallback={fromSearch} className="back-button-favorites" />
+    <div className="movie-details">
+      {/* Centered Back Button */}
+      <div className="movie-details__back-wrapper">
+        <button
+          className="movie-details__back-button"
+          onClick={() => navigate(fromSearch)}
+        >
+          ← Back
+        </button>
       </div>
 
-      {loading ? (
-        <>
-          <SkeletonCard type="movieDetails" />
-          <p className="loading-text">Loading...</p>
-        </>
-      ) : movie ? (
-        <div className="fade-in">
-          <div className="movieDetails__top-card">
-            <Bookmark movie={movie} className="movieDetails__bookmark" />
-            <div className="movie__top">
-              <div className="movie__poster-container">
-                <img
-                  src={movie.Poster !== "N/A" ? movie.Poster : "/assets/blank-poster.png"}
-                  alt={movie.Title}
-                  className="movie__poster"
-                />
-              </div>
-              <div className="movie__info-container">
-                <h2 className="movie__title">
-                  {movie.Title} <span>({movie.Year})</span>
-                </h2>
-                <p>Rated: {movie.Rated}</p>
-                <p>Genre: {movie.Genre}</p>
-                <p>Director: {movie.Director}</p>
-                <p>Actors: {movie.Actors}</p>
-                <p>IMDB Rating: {movie.imdbRating}</p>
-              </div>
-            </div>
+      {/* Top Card: poster + info + bookmark */}
+      <div className="movie-details__top-card">
+        <Bookmark movie={movie} className="movie-details__bookmark" />
+
+        <div className="movie-details__top">
+          <div className="movie-details__poster-container">
+            <img
+              className="movie-details__poster"
+              src={movie.Poster}
+              alt={movie.Title}
+            />
           </div>
 
-          <div className="movieDetails__bottom-card">
-            <h3 className="movie__plot--title">Plot</h3>
-            <p className="movie__plot">{movie.Plot}</p>
-            {movie.Awards && <p className="movie__awards">Awards: {movie.Awards}</p>}
+          <div className="movie-details__info">
+            <h1 className="movie-details__title">{movie.Title}</h1>
+            <p>{movie.Year}</p>
+            <p>{movie.Genre}</p>
+            <p>{movie.Runtime}</p>
+            <p>{movie.Director}</p>
+            <p>{movie.Actors}</p>
+            {movie.imdbRating && (
+              <p>
+                <strong>IMDb Rating:</strong> {movie.imdbRating}
+              </p>
+            )}
           </div>
         </div>
-      ) : (
-        <p style={{ textAlign: "center", marginTop: "40px" }}>
-          Movie details not found.
-        </p>
-      )}
+      </div>
+
+      {/* Bottom Card: plot + awards */}
+      <div className="movie-details__bottom-card">
+        <div>
+          <p className="movie-details__plot-title">Plot:</p>
+          <p className="movie-details__plot">{movie.Plot}</p>
+        </div>
+
+        {movie.Awards && (
+          <div>
+            <p className="movie-details__plot-title">Awards:</p>
+            <p className="movie-details__awards">{movie.Awards}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

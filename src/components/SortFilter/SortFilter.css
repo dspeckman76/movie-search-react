@@ -1,6 +1,6 @@
 /* src/components/SortFilter/SortFilter.css */
 
-/* Container */
+/* Sort filter container */
 .sortfilter {
   position: relative;
   display: inline-block;
@@ -37,7 +37,7 @@
   font-size: 0.75rem;
 }
 
-/* Dropdown content */
+/* Dropdown menu */
 .sortfilter__content {
   display: none;
   position: absolute;
@@ -58,7 +58,7 @@
   display: flex;
 }
 
-/* Sort options buttons */
+/* Sort option buttons */
 .sortfilter__content button {
   background: none;
   border: none;
@@ -75,11 +75,7 @@
   color: yellow;
 }
 
-/* =========================
-   Responsive Layouts
-========================= */
-
-/* Tablet */
+/* Tablet styles */
 @media (max-width: 1024px) {
   .sortfilter__content {
     min-width: 180px;
@@ -91,7 +87,7 @@
   }
 }
 
-/* Mobile */
+/* Mobile styles */
 @media (max-width: 768px) {
   .sortfilter__content {
     min-width: 160px;
@@ -103,7 +99,7 @@
   }
 }
 
-/* Small mobile */
+/* Small mobile styles */
 @media (max-width: 480px) {
   .sortfilter__content {
     min-width: 140px;

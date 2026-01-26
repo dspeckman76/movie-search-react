@@ -1,4 +1,7 @@
-.movie__bookmark {
+/* src/components/Bookmark/Bookmark.css */
+
+/* Bookmark container */
+.movie-bookmark {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -7,18 +10,18 @@
   z-index: 1;
 }
 
-/* Default (inactive) */
-.movie__bookmark i {
+/* Icon default (inactive) */
+.movie-bookmark i {
   color: #888;
   transition: color 0.25s ease, transform 0.2s ease;
 }
 
-/* Active (favorited) */
-.movie__bookmark.active i {
+/* Modifier: active/favorited */
+.movie-bookmark--active i {
   color: gold;
 }
 
 /* Hover feedback */
-.movie__bookmark:hover i {
+.movie-bookmark:hover i {
   transform: scale(1.15);
 }
