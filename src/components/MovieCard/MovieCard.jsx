@@ -1,10 +1,9 @@
 // src/components/MovieCard/MovieCard.jsx
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./MovieCard.css";
 import Bookmark from "../Bookmark/Bookmark";
-import { FavoritesContext } from "../../App";
 import { resolvePoster } from "../../utils/resolvePoster.js";
 
 /**
