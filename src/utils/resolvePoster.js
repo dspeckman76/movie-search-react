@@ -1,3 +1,5 @@
+// src/utils/resolvePoster.js
+
 import placeholder from "../assets/blank-poster.png";
 
 /**
@@ -6,7 +8,7 @@ import placeholder from "../assets/blank-poster.png";
  * @param {Object} movie - movie object, may have tmdbPoster and Poster fields
  * @returns {string} - URL of the poster image
  */
-export function resolvePoster(movie) {
+function resolvePoster(movie) {
   if (!movie) return placeholder;
 
   // 1️⃣ TMDb poster
@@ -23,3 +25,4 @@ export function resolvePoster(movie) {
   return placeholder;
 }
 
+export { resolvePoster };

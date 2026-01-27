@@ -3,7 +3,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import logoImg from "../../assets/logo-2.png";
+import logo from "../../assets/logo-2.png";
 
 /**
  * Header
@@ -24,7 +24,7 @@ function Header({ onReset }) {
   return (
     <header className="header">
       <div className="header__logo" onClick={goHome} style={{ cursor: "pointer" }}>
-        <img src={logoImg} alt="Logo" className="header__logo-img" />
+        <img src={logo} alt="Logo" className="header__logo-img" />
         <div className="header__title">
           <p>
             Movie <span>Search</span>
