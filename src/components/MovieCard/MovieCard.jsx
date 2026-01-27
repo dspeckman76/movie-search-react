@@ -17,7 +17,6 @@ import { resolvePoster } from "../../utils/resolvePoster.js";
 function MovieCard({ movie, loading }) {
   const [loaded, setLoaded] = useState(false);
   const location = useLocation();
-  const { isFavorite } = useContext(FavoritesContext);
 
   if (loading || !movie) {
     return (
